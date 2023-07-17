@@ -4,7 +4,7 @@ using SqlKata.Execution;
 using WebAPIServer.DataClass;
 using WebAPIServer.Util;
 using ZLogger;
-using ManagingTool.Shared.DTO;
+using WebAPIServer.ReqRes;
 
 namespace WebAPIServer.DbOperations;
 

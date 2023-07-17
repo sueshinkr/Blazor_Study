@@ -12,7 +12,7 @@ using WebAPIServer.Util;
 
 namespace WebAPIServer.DbOperations;
 
-public class MasterDb : IMasterDb
+public partial class MasterDb : IMasterDb
 {
     // 데이터베이스에서 마스터데이터 가져오기
     // 이후에는 마스터데이터와 관련된 것들은 여기서 사용
@@ -92,4 +92,6 @@ public class MasterDb : IMasterDb
             return errorCode;
         }
     }
+
+
 }

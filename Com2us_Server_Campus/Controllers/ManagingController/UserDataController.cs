@@ -9,23 +9,22 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using ZLogger;
 using WebAPIServer.DataClass;
-using ManagingTool.Shared.DTO;
 
 [ApiController]
 [Route("Managing/[controller]")]
-public class GetUserData : ControllerBase
+public class UserData : ControllerBase
 {
-    readonly ILogger<GetUserData> _logger;
+    readonly ILogger<UserData> _logger;
 	readonly IGameDb _gameDb;
 
 
-	public GetUserData(ILogger<GetUserData> logger, IGameDb gameDb)
+	public UserData(ILogger<UserData> logger, IGameDb gameDb)
     {
 		_logger = logger;
 		_gameDb = gameDb;
     }
 
-    [HttpPost("byUserId")]
+    [HttpPost("GetByUserID")]
 	public async Task<GetUserDataResponse> Post(GetUserDataByUserIdRequest request)
 	{
 		var response = await _gameDb.GetUserDataByUserIdAsync(request.UserID);
@@ -38,7 +37,7 @@ public class GetUserData : ControllerBase
 		return response.Item2;
 	}
 
-	[HttpPost("byRange")]
+	[HttpPost("GetByRange")]
 	public async Task<GetUserDataResponse> Post(GetUserDataByRangeRequest request)
 	{
 		var response = await _gameDb.GetUserDataByRangeAsync(request.Category, request.MinValue, request.MaxValue);

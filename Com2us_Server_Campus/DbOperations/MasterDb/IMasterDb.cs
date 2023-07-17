@@ -1,5 +1,6 @@
 ﻿using System;
 using WebAPIServer.DataClass;
+using WebAPIServer.ReqRes;
 
 namespace WebAPIServer.DbOperations;
 
@@ -17,5 +18,7 @@ public interface IMasterDb
     public Task<ErrorCode> Init();
 
     public Task<ErrorCode> VerifyVersionDataAsync(double appVersion, double masterVersion);
+
+    public Task<Tuple<ErrorCode, GetItemTableResponse>> GetItemTableAsync();
 }
 

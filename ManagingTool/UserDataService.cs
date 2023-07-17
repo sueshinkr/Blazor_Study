@@ -14,7 +14,7 @@ public class UserDataService
             UserID = userId
         };
 
-        var response = await HttpClient.PostAsJsonAsync("Managing/GetUserData/byUserId", request);
+        var response = await HttpClient.PostAsJsonAsync("Managing/UserData/GetByUserID", request);
         var responseDTO = await response.Content.ReadFromJsonAsync<GetUserDataResponse>();
 
         if (responseDTO == null)
@@ -34,7 +34,7 @@ public class UserDataService
             MaxValue = maxValue
         };
 
-        var response = await HttpClient.PostAsJsonAsync("Managing/GetUserData/byRange", request);
+        var response = await HttpClient.PostAsJsonAsync("Managing/UserData/GetByRange", request);
         var responseDTO = await response.Content.ReadFromJsonAsync<GetUserDataResponse>();
 
         if (responseDTO == null)

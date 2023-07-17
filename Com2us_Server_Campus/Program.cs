@@ -22,6 +22,16 @@ builder.Services.AddIdGen((int)defaultSetting.GeneratorId);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy",
+        builder => builder
+            .AllowAnyMethod()
+            .AllowCredentials()
+            .SetIsOriginAllowed((host) => true)
+            .AllowAnyHeader());
+});
+
 //builder.Services.AddControllers();
 
 LogManager.SetLogging(builder);
@@ -53,6 +63,7 @@ app.UseHttpsRedirection();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseCors("CorsPolicy");
 
 app.MapRazorPages();
 app.MapControllers();

@@ -1,5 +1,4 @@
-﻿using System;
-using ManagingTool.Shared.DTO;
+﻿using WebAPIServer.ReqRes;
 using WebAPIServer.DataClass;
 
 namespace WebAPIServer.DbOperations;
