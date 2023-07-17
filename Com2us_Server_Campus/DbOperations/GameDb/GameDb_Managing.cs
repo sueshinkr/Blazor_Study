@@ -33,7 +33,7 @@ public partial class GameDb : IGameDb
 		}
 		catch (Exception ex)
 		{
-			var errorCode = ErrorCode.GetUserDataFromUserIdFailException;
+			var errorCode = ErrorCode.GetUserDataByUserIdFailException;
 
 			_logger.ZLogError(LogManager.MakeEventId(errorCode), ex, "GetUserDataFromUserId Exception");
 
@@ -80,7 +80,7 @@ public partial class GameDb : IGameDb
 		}
 		catch(Exception ex)
 		{
-			var errorCode = ErrorCode.GetUserDataFromUserIdFailException;
+			var errorCode = ErrorCode.GetUserDataByRangeFailException;
 
 			_logger.ZLogError(LogManager.MakeEventId(errorCode), ex, "GetUserDataByRange Exception");
 

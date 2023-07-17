@@ -127,6 +127,7 @@
     ReceiveChatFailWrongUser = 10012,
     ReceiveChatFailException = 10013,
 
-	// Managing Error
-	GetUserDataFromUserIdFailException = 11001
+    // Managing Error
+    GetUserDataByUserIdFailException = 11001,
+    GetUserDataByRangeFailException = 11002
 }
