@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using ManagingTool.Shared.DTO;
 
-namespace ManagingTool;
+namespace ManagingTool.Client;
 
 public class ItemService
 {

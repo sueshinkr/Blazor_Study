@@ -9,14 +9,18 @@ namespace WebAPIServer.DbOperations;
 public partial class MasterDb : IMasterDb
 {
     public async Task<Tuple<ErrorCode, GetItemTableResponse>> GetItemTableAsync()
-    {
+    {/*
         try
         {
             var response = new GetItemTableResponse();
-            var itemDataSet = new List<ItemAttribute>();
+            
+            response.Item_Weapon = await _queryFactory.Query("ItemTable").Select("ItemId", "ItemName")
+                                                      .Where("ItemCode", 1).GetAsync<ItemAttribute>() as List<ItemAttribute>;
 
-            itemDataSet = await _queryFactory.Query("ItemTable").Select("ItemId", "ItemName")
-                                             .Where("ItemCode", 1).GetAsync<ItemAttribute>() as List<ItemAttribute>;
+            response.Item_Armor = await _queryFactory.Query("ItemTable").Select("ItemId", "ItemName")
+                                                      .Where("ItemCode", 2).GetAsync<ItemAttribute>() as List<ItemAttribute>;
+            re
+          
 
             response.ItemProperty = itemDataSet;
 
@@ -31,6 +35,7 @@ public partial class MasterDb : IMasterDb
 
             return new Tuple<ErrorCode, GetItemTableResponse>(ErrorCode.DbError, null);
         }   
+        */
         return null;
     }
 }

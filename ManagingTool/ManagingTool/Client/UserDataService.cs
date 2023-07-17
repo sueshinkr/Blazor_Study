@@ -1,16 +1,16 @@
 ﻿using System.Net.Http.Json;
-using ManagingTool.Shared.DTO;  
+using ManagingTool.Shared.DTO;
 
-namespace ManagingTool;
+namespace ManagingTool.Client;
 
 public class UserDataService
 {
-    public static HttpClient HttpClient { get; set; }  
+    public static HttpClient HttpClient { get; set; }
 
-    public async Task<GetUserDataResponse> GetUserDataByUserId(Int64 userId)
+    public async Task<GetUserDataResponse> GetUserDataByUserId(long userId)
     {
         var request = new GetUserDataByUserIdRequest
-		{
+        {
             UserID = userId
         };
 
@@ -25,7 +25,7 @@ public class UserDataService
         return responseDTO;
     }
 
-    public async Task<List<UserInfo>> GetUserDataByRange(string category, Int64 minValue, Int64 maxValue)
+    public async Task<List<UserInfo>> GetUserDataByRange(string category, long minValue, long maxValue)
     {
         var request = new GetUserDataByRangeRequest
         {

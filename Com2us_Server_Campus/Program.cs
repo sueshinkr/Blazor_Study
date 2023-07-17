@@ -19,9 +19,6 @@ builder.Services.AddSingleton<IRedisDb, RedisDb>();
 builder.Services.AddSingleton<IMasterDb, MasterDb>();
 builder.Services.AddIdGen((int)defaultSetting.GeneratorId);
 
-builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
@@ -32,22 +29,12 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader());
 });
 
-//builder.Services.AddControllers();
+builder.Services.AddControllers();
 
 LogManager.SetLogging(builder);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-	app.UseWebAssemblyDebugging();
-}
-else
-{
-	app.UseExceptionHandler("/Error");
-	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-	app.UseHsts();
-}
 
 var redisDb = app.Services.GetRequiredService<IRedisDb>();
 await redisDb.Init();
@@ -58,16 +45,10 @@ await masterDb.Init();
 // 로그인 이후 유저 인증
 //app.UseMiddleware<WebAPIServer.Middleware.CheckUserAuth>();
 
-app.UseHttpsRedirection();
-
-app.UseBlazorFrameworkFiles();
-app.UseStaticFiles();
 app.UseRouting();
 app.UseCors("CorsPolicy");
 
-app.MapRazorPages();
 app.MapControllers();
-app.MapFallbackToFile("index.html");
 
 app.Run(configuration["ServerAddress"]);
 
