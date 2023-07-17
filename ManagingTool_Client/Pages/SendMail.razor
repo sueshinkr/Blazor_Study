@@ -1,0 +1,66 @@
+﻿@page "/SendMail"
+@inject ItemService ItemService
+
+<h3>ProvideItem</h3>
+
+<div class="mb-3">
+    UserID:
+    <input type="number" @bind="userId" class="form-label" name="UserID">UserID</input>
+    <button class="btn btn-primary" @onclick="SendMailByUserID">Search</button>
+</div>
+
+<div>
+    Title:
+    <TextArea Placeholder="메일 제목을 입력해주세요" AutoSize="true" />
+    <input type="text" @bind="title" name="Title" />
+    Content:
+    <TextArea Placeholder="메일 내용을 입력해주세요" AutoSize="true" />
+    <input type="text" @bind="content" name="Content"/>
+</div>
+
+
+
+@code {
+    // 아이템 카테고리에 따른 아이템 코드, 아이템 이름
+    Dictionary<Int64, ItemProperty> ItemCategory = new Dictionary<Int64, ItemProperty>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await ItemService.GetItemTable();
+
+        foreach (var item in response.ItemProperty)
+        {
+            ItemCategory.Add(item.Attribute, item);
+        }
+    }
+
+    string title = string.Empty;
+    string content = string.Empty;
+    Int64 itemCode = 0;
+    Int64 userId = 0;
+
+    MailForm mailForm = new MailForm();
+
+    private async Task SendMailByUserID()
+    {
+        /*
+        userDataSet.Clear();
+
+        var userData = await ItemService.SendMail(userId);
+        if (userData == null || userData.UserID == 0)
+        {
+            isSearch = false;
+        }
+        else
+        {
+            isSearch = true;
+            userDataSet.Add(userData);
+        }
+        */
+    }
+
+    private void SetMail()
+    {
+        
+    }
+}

@@ -1,0 +1,129 @@
+﻿@page "/GetUserData"
+@using System.ComponentModel.DataAnnotations;
+@inject UserDataService UserDataService
+
+<h3>SearchUserData</h3>
+
+<div class="mb-3">
+    UserID:
+    <input type="number" @bind="userId" class="form-label" name="UserID">UserID</input>
+    <button class="btn btn-primary" @onclick="GetUserDataByUserId">Search</button>
+</div>
+
+<SimpleSelect DefaultValue="UserID" Style="width:200px;" OnSelectedItemChanged="handleChange">
+    <SelectOptions>
+        <SimpleSelectOption Value="UserID" Label="UserID"></SimpleSelectOption>
+        <SimpleSelectOption Value="Level" Label="Level"></SimpleSelectOption>
+        <SimpleSelectOption Value="Money" Label="Money"></SimpleSelectOption>
+        <SimpleSelectOption Value="BestClearStage" Label="BestClearStage"></SimpleSelectOption>
+        <SimpleSelectOption Value="LastLogin" Label="LastLogin"></SimpleSelectOption>
+    </SelectOptions>
+</SimpleSelect>
+
+<div class="mb-3">
+    Min:
+    <input type ="number" @bind="minValue" class="form-label" name="Min">Min</input>
+    Max:
+    <input type="number" @bind="maxValue" class="form-label" name="Max">Max</input>
+    <button class="btn btn-primary" @onclick="GetUserDataByRange">Search</button>
+</div>
+
+@using System.ComponentModel
+@using AntDesign.TableModels
+@using AntDesign.Core.Extensions
+
+<Table TItem="UserInfo" DataSource="@userDataSet">
+
+    <GenerateColumns Range="1.." Definitions=definitions />
+
+    @*<ActionColumn Title="Action">
+        <Space Size=@("middle")>
+            <SpaceItem>
+                <a>Invite @context.Name</a>
+            </SpaceItem>
+            <SpaceItem>
+                <a>Delete</a>
+            </SpaceItem>
+        </Space>
+    </ActionColumn>*@
+</Table>
+
+@code {
+
+    ///// <summary>
+    ///// An Action to defined each column
+    ///// </summary>
+    ///// <param name="propertyName">The name of the property binding the column. </param>
+    ///// <param name="column">The column instance, you need to explicitly cast to a concrete Column type. </param>
+    void definitions(string propertyName, object column)
+    {
+        if (propertyName == "Tags")
+        {
+            var tagCol = ((Column<string[]>)column);
+
+            tagCol.CellRender = cellData =>
+            @<span>
+                @foreach (var tag in cellData.FieldValue)
+                {
+                    var color = tag.Length > 5 ? "geekblue" : "green";
+                    if (tag == "loser")
+                    {
+                        color = "volcano";
+                    }
+                    <Tag Color="@color">@tag</Tag>
+                }
+            </span>
+    ;
+
+            return;
+        }
+
+        // You can use the `SetValue` extension method to set parameters for columns.
+        column.SetValue("Sortable", true);
+        column.SetValue("Filterable", true);
+    }
+
+    Int64 userId = 0;
+    string category = "UserID";
+    Int64 minValue = 0;
+    Int64 maxValue = 0;
+    Boolean isSearch = false;
+
+    List<UserInfo> userDataSet = new();
+
+    void handleChange(string value)
+    {
+        category = value;
+    }
+
+    async Task GetUserDataByUserId()
+    {
+        userDataSet.Clear();
+
+        var response = await UserDataService.GetUserDataByUserId(userId);
+        if (response.UserInfo.Count == 0)
+        {
+            isSearch = false;
+        }
+        else
+        {
+            isSearch = true;
+            userDataSet = response.UserInfo;
+        }
+    }
+
+    async Task GetUserDataByRange()
+    {
+        userDataSet.Clear();
+
+        userDataSet = await UserDataService.GetUserDataByRange(category, minValue, maxValue);
+        if (userDataSet.Count == 0)
+        {
+            isSearch = false;
+        }
+        else
+        {
+            isSearch = true;
+        }
+    }
+}
