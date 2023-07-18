@@ -9,23 +9,40 @@ namespace WebAPIServer.DbOperations;
 public partial class MasterDb : IMasterDb
 {
     public async Task<Tuple<ErrorCode, GetItemTableResponse>> GetItemTableAsync()
-    {/*
+    {
         try
         {
             var response = new GetItemTableResponse();
-            
-            response.Item_Weapon = await _queryFactory.Query("ItemTable").Select("ItemId", "ItemName")
-                                                      .Where("ItemCode", 1).GetAsync<ItemAttribute>() as List<ItemAttribute>;
 
-            response.Item_Armor = await _queryFactory.Query("ItemTable").Select("ItemId", "ItemName")
-                                                      .Where("ItemCode", 2).GetAsync<ItemAttribute>() as List<ItemAttribute>;
-            re
-          
+            response.Item_Weapon = ItemInfo.Where(item => item.Attribute == 1)
+                                   .Select(item => new ItemAttribute
+                                   {
+                                       Name = item.Name,
+                                       Code = item.Code
+                                   }).ToList();
 
-            response.ItemProperty = itemDataSet;
+			response.Item_Armor = ItemInfo.Where(item => item.Attribute == 2)
+								   .Select(item => new ItemAttribute
+								   {
+									   Name = item.Name,
+									   Code = item.Code
+								   }).ToList();
 
-            return new Tuple<ErrorCode, GetItemTableResponse>(ErrorCode.None, response);
+			response.Item_Clothes = ItemInfo.Where(item => item.Attribute == 3)
+								   .Select(item => new ItemAttribute
+								   {
+									   Name = item.Name,
+									   Code = item.Code
+								   }).ToList();
 
+			response.Item_MagicTool = ItemInfo.Where(item => item.Attribute == 4)
+								   .Select(item => new ItemAttribute
+								   {
+									   Name = item.Name,
+									   Code = item.Code
+								   }).ToList();
+
+			return new Tuple<ErrorCode, GetItemTableResponse>(ErrorCode.None, response);
         }
         catch (Exception ex)
         {
@@ -33,9 +50,7 @@ public partial class MasterDb : IMasterDb
 
             _logger.ZLogError(LogManager.MakeEventId(errorCode), ex, "GetUserDataByRange Exception");
 
-            return new Tuple<ErrorCode, GetItemTableResponse>(ErrorCode.DbError, null);
+            return new Tuple<ErrorCode, GetItemTableResponse>(errorCode, null);
         }   
-        */
-        return null;
     }
 }

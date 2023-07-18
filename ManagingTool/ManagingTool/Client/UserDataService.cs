@@ -1,11 +1,12 @@
 ﻿using System.Net.Http.Json;
 using ManagingTool.Shared.DTO;
+using Microsoft.AspNetCore.Components;
 
 namespace ManagingTool.Client;
 
 public class UserDataService
 {
-    public static HttpClient HttpClient { get; set; }
+    public static HttpClient _httpClient { get; set; }
 
     public async Task<GetUserDataResponse> GetUserDataByUserId(long userId)
     {
@@ -14,7 +15,7 @@ public class UserDataService
             UserID = userId
         };
 
-        var response = await HttpClient.PostAsJsonAsync("Managing/UserData/GetByUserID", request);
+        var response = await _httpClient.PostAsJsonAsync("api/UserData/GetByUserID", request);
         var responseDTO = await response.Content.ReadFromJsonAsync<GetUserDataResponse>();
 
         if (responseDTO == null)
@@ -34,7 +35,7 @@ public class UserDataService
             MaxValue = maxValue
         };
 
-        var response = await HttpClient.PostAsJsonAsync("Managing/UserData/GetByRange", request);
+        var response = await _httpClient.PostAsJsonAsync("api/UserData/GetByRange", request);
         var responseDTO = await response.Content.ReadFromJsonAsync<GetUserDataResponse>();
 
         if (responseDTO == null)

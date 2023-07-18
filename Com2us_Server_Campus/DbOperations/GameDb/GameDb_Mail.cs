@@ -270,7 +270,6 @@ public partial class GameDb : IGameDb
             return errorCode;
         }
     }
-
     // 메일에 아이템 첨부
     // Mail_Item 테이블에 데이터 추가
     private async Task<ErrorCode> InsertItemIntoMailAsync(Int64 mailId, Int64 itemCode, Int64 itemCount)

@@ -1,68 +1,153 @@
 ﻿@page "/SendMail"
 @inject ItemService ItemService
+@inject MailService MailService
+@inject IMessageService _message
 
-<h3>ProvideItem</h3>
+@*@inject Blazored.LocalStorage.ILocalStorageService localStorage*@
+
+
+<h3>SendMail</h3>
 
 <div class="mb-3">
     UserID:
-    <input type="number" @bind="userId" class="form-label" name="UserID">UserID</input>
-    <button class="btn btn-primary" @onclick="SendMailByUserID">Search</button>
+    <input type="number" @bind="userId" @bind:event="oninput" class="form-label" name="UserID">UserID</input>
 </div>
 
 <div>
     Title:
-    <TextArea Placeholder="메일 제목을 입력해주세요" AutoSize="true" />
-    <input type="text" @bind="title" name="Title" />
+    <TextArea ShowCount Placeholder="메일 제목을 입력해주세요" MaxLength=100 OnChange="onChange_title" AutoSize="false" />
     Content:
-    <TextArea Placeholder="메일 내용을 입력해주세요" AutoSize="true" />
-    <input type="text" @bind="content" name="Content"/>
+    <TextArea ShowCount Placeholder="메일 내용을 입력해주세요" MaxLength=2000 OnChange="onChange_content" AutoSize="true" />
 </div>
 
 
+<Select TItem="ItemAttribute"
+        TItemValue="ItemAttribute"
+        DataSource="@itemList"
+        @bind-Value="@selectedItem"
+        LabelName="@nameof(ItemAttribute.Name)"
+        @*ValueName="@nameof(ItemAttribute.Code)"*@
+        EnableSearch
+        DefaultValue=null
+        Placeholder="Select an Item"
+        OnSelectedItemChanged="OnSelectedItemChangedHandler"
+        SortByLabel="@SortDirection.Ascending"
+        AllowClear
+        Style="width: calc(100% - 68px);">
+</Select>
+<Dropdown Style="padding-left: 8px;" Trigger="@(new Trigger[] { Trigger.Click })">
+    <Overlay>
+        <Menu Selectable="false">
+            <MenuItem OnClick="@SetWeaponList">Weapon LIst</MenuItem>
+            <MenuItem OnClick="@SetArmorList">Armor List</MenuItem>
+            <MenuItem OnClick="@SetClothesList">Clothes List</MenuItem>
+            <MenuItem OnClick="@SetMagicToolList">MagicTool List</MenuItem>
+            <MenuItem OnClick="@ClearDS">Clear</MenuItem>
+        </Menu>
+    </Overlay>
+    <ChildContent>
+        <a class="ant-dropdown-link" @onclick:preventDefault>Actions<Icon Type="down" /></a>
+    </ChildContent>
+</Dropdown>
+<br />
+<br />
+<p>
+    Selected Item: @selectedItem?.Name <br />
+    Selected ItemCode: @selectedItem?.Code <br />
+    ItemCount:
+    <input type="number" @bind="itemCount" class="form-label" name="ItemCount">ItemCount</input>
+</p>
+
+<button class="btn btn-primary" @onclick="SendMailByUserID">Send</button>
 
 @code {
-    // 아이템 카테고리에 따른 아이템 코드, 아이템 이름
-        /*
-    Dictionary<Int64, ItemAttribute> ItemCategory = new Dictionary<Int64, ItemAttribute>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        var response = await ItemService.GetItemTable();
-
-        foreach (var item in response.ItemProperty)
-        {
-            ItemCategory.Add(item.Attribute, item);
-        }
-    }
-    */
-
     string title = string.Empty;
     string content = string.Empty;
-    Int64 itemCode = 0;
     Int64 userId = 0;
+
+    ItemTable itemTable = new ItemTable();
+    List<ItemAttribute> itemList;
+    ItemAttribute selectedItem;
+    Int64 itemCount = 0;
+
+    class ItemTable
+    {
+        public List<ItemAttribute> itemWeapon { get; set; }
+        public List<ItemAttribute> itemArmor { get; set; }
+        public List<ItemAttribute> itemClothes { get; set; }
+        public List<ItemAttribute> itemMagicTool { get; set; }
+    }
 
     MailForm mailForm = new MailForm();
 
+    protected override async Task OnInitializedAsync()
+    {
+        var itemTableData = await ItemService.GetItemTable();
+
+        itemTable.itemWeapon = itemTableData.Item_Weapon;
+        itemTable.itemArmor = itemTableData.Item_Armor;
+        itemTable.itemClothes = itemTableData.Item_Clothes;
+        itemTable.itemMagicTool = itemTableData.Item_MagicTool;
+
+        itemList = itemTable.itemWeapon;
+    }
+
+    string localStorageKey{ get; set; }
+
+    private async void onChange_title(string value)
+    {
+        title = value;
+    }
+
+    private void onChange_content(string value)
+    {
+        content = value;
+    }
+
+    private void OnSelectedItemChangedHandler(ItemAttribute value)
+    {
+        selectedItem = value;
+    }
+
+    private void SetWeaponList()
+    {
+        itemList = itemTable.itemWeapon;
+    }
+
+    private void SetArmorList()
+    {
+        itemList = itemTable.itemArmor;
+    }
+
+    private void SetClothesList()
+    {
+        itemList = itemTable.itemClothes;
+    }
+
+    private void SetMagicToolList()
+    {
+        itemList = itemTable.itemMagicTool;
+    }
+
+    private void ClearDS()
+    {
+        itemList = null;
+        selectedItem = null;
+    }
+
     private async Task SendMailByUserID()
     {
-        /*
-        userDataSet.Clear();
+        mailForm.Title = title;
+        mailForm.Content = content;
+        mailForm.ItemCode = selectedItem == null ? 0 : selectedItem.Code;
+        mailForm.ItemCount = itemCount;
 
-        var userData = await ItemService.SendMail(userId);
-        if (userData == null || userData.UserID == 0)
+        var isSuccess = await MailService.SendMail(mailForm, userId);
+        if (isSuccess.errorCode == ErrorCode.None)
         {
-            isSearch = false;
+            await _message.Success("Send Mail Success!");
         }
-        else
-        {
-            isSearch = true;
-            userDataSet.Add(userData);
-        }
-        */
     }
 
-    private void SetMail()
-    {
-        
-    }
+   
 }

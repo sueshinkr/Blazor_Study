@@ -87,4 +87,55 @@ public partial class GameDb : IGameDb
 			return new Tuple<ErrorCode, GetUserDataResponse>(errorCode, null);
 		}
 	}
+
+	public async Task<SendMailResponse> SendManagingMailAsync(MailForm mailForm, Int64 userId)
+	{
+		var mailId = _idGenerator.CreateId();
+		var response = new SendMailResponse
+		{
+			errorCode = ErrorCode.None
+		};
+
+		try
+		{
+			var hasItem = false;
+			if (mailForm.ItemCode != 0)
+				hasItem = true;
+			
+			// 메일 본문 전송
+			await _queryFactory.Query("Mail_Data").InsertAsync(new
+			{
+				MailId = mailId,
+				UserId = userId,
+				SenderId = 0,
+				Title = mailForm.Title,
+				Content = mailForm.Content,
+				hasItem = hasItem,
+				ExpiredAt = DateTime.Now.AddDays(7)
+			});
+
+			// 메일 아이템 전송
+			if (hasItem == true)
+			{
+				response.errorCode = await InsertItemIntoMailAsync(mailId, mailForm.ItemCode, mailForm.ItemCount);
+				if (response.errorCode != ErrorCode.None)
+				{
+					// 롤백
+					await SendMailAttendanceRewardRollBack(mailId);
+
+					return response;
+				}
+			}
+
+			return response;
+		}
+		catch (Exception ex)
+		{
+			response.errorCode = ErrorCode.SendMailFailException;
+
+			_logger.ZLogError(LogManager.MakeEventId(response.errorCode), ex, "SendMailAttendanceReward Exception");
+
+			return response;
+		}
+	}
 }

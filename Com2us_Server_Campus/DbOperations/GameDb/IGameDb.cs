@@ -28,5 +28,6 @@ public interface IGameDb : IDisposable
 
     public Task<Tuple<ErrorCode, GetUserDataResponse>> GetUserDataByUserIdAsync(Int64 userId);
     public Task<Tuple<ErrorCode, GetUserDataResponse>> GetUserDataByRangeAsync(string category, Int64 minValue, Int64 maxValue);
+    public Task<SendMailResponse> SendManagingMailAsync(MailForm mailForm, Int64 userId);
 }
 

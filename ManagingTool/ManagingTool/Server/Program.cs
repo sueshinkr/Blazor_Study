@@ -1,3 +1,4 @@
+using ManagingTool.Client;
 using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri("http://localhost:11500/") });
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

@@ -22,8 +22,8 @@ public class Item
 
 public class ItemAttribute
 {
-    public string Name { get; }
-    public Int64 Code { get; }
+    public string Name { get; set; }
+    public Int64 Code { get; set; }
 }
 
 public class AttendanceReward
