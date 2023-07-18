@@ -20,5 +20,18 @@ public class MailService
 
         return responseDTO;
     }
+
+    public async Task<GetUserMailListResponse> GetUserMailList(Int64 userId)
+    {
+        var request = new GetUserMailListRequest
+        {
+            UserID = userId
+        };
+
+        var response = await _httpClient.PostAsJsonAsync("api/MailData/GetUserMailList", request);
+        var responseDTO = await response.Content.ReadFromJsonAsync<GetUserMailListResponse>();
+
+        return responseDTO;
+    }
 }
 

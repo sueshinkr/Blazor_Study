@@ -32,4 +32,18 @@ public class MailData : ControllerBase
 
         return responseDTO;
     }
+
+    [HttpPost("GetUserMailList")]
+    public async Task<GetUserMailListResponse> Post(GetUserMailListRequest request)
+    {
+        var response = await _httpClient.PostAsJsonAsync("Managing/MailData/GetUserMailList", request);
+        var responseDTO = await response.Content.ReadFromJsonAsync<GetUserMailListResponse>();
+
+        if (responseDTO == null)
+        {
+            // errorlog
+        }
+
+        return responseDTO;
+    }
 }

@@ -1,17 +1,26 @@
-﻿@page "/GetUserData"
+﻿@page "/Lookup_Multiple_Users"
 @using System.ComponentModel.DataAnnotations;
 @using System.ComponentModel
 @using AntDesign.TableModels
 @using AntDesign.Core.Extensions
-@inject UserDataService UserDataService
+@using ManagingTool.Shared.DTO
+@inject UserService UserDataService
 
-<h3>SearchUserData</h3>
 
-<div class="mb-3">
+<h3>User_Item</h3>
+
+
+@*<div class="mb-3">
     UserID:
     <input type="number" @bind="userId" class="form-label" name="UserID">UserID</input>
-    <button class="btn btn-primary" @onclick="GetUserDataByUserId">Search</button>
+    <button class="btn btn-primary" @onclick="GetUserItemList">Search</button>
 </div>
+
+<Table TItem="ManagingTool.Shared.DTO.UserItem" DataSource="@userItemDataSet">
+    <GenerateColumns Range="1.." Definitions=definitions />
+</Table>
+
+*@
 
 <SimpleSelect DefaultValue="UserID" Style="width:200px;" OnSelectedItemChanged="handleChange">
     <SelectOptions>
@@ -25,29 +34,23 @@
 
 <div class="mb-3">
     Min:
-    <input type ="number" @bind="minValue" class="form-label" name="Min">Min</input>
+    <input type="number" @bind="minValue" class="form-label" name="Min">Min</input>
     Max:
     <input type="number" @bind="maxValue" class="form-label" name="Max">Max</input>
-    <button class="btn btn-primary" @onclick="GetUserDataByRange">Search</button>
+    <button class="btn btn-primary" @onclick="GetMultipleUserBasicInfo">Search</button>
 </div>
+
 
 <Table TItem="UserInfo" DataSource="@userDataSet">
     <GenerateColumns Range="1.." Definitions=definitions />
 </Table>
 
+
 @code {
-
-    void definitions(string propertyName, object column)
-    {
-        column.SetValue("Sortable", true);
-        column.SetValue("Filterable", true);
-    }
-
     Int64 userId = 0;
     string category = "UserID";
     Int64 minValue = 0;
     Int64 maxValue = 0;
-    Boolean isSearch = false;
 
     List<UserInfo> userDataSet = new();
 
@@ -56,34 +59,17 @@
         category = value;
     }
 
-    async Task GetUserDataByUserId()
+    void definitions(string propertyName, object column)
     {
-        userDataSet.Clear();
-
-        var response = await UserDataService.GetUserDataByUserId(userId);
-        if (response.UserInfo.Count == 0)
-        {
-            isSearch = false;
-        }
-        else
-        {
-            isSearch = true;
-            userDataSet = response.UserInfo;
-        }
+        column.SetValue("Sortable", true);
+        column.SetValue("Filterable", true);
     }
 
-    async Task GetUserDataByRange()
+    async Task GetMultipleUserBasicInfo()
     {
         userDataSet.Clear();
 
-        userDataSet = await UserDataService.GetUserDataByRange(category, minValue, maxValue);
-        if (userDataSet.Count == 0)
-        {
-            isSearch = false;
-        }
-        else
-        {
-            isSearch = true;
-        }
+        userDataSet = await UserDataService.GetMultipleUserBasicInfo(category, minValue, maxValue);
     }
 }
+

@@ -27,7 +27,7 @@ public class ItemData : ControllerBase
 		_masterDb = masterDb;
     }
 
-    [HttpPost("ItemTable")]
+    [HttpPost("GetItemTable")]
 	public async Task<GetItemTableResponse> Post(GetItemTableRequest request)
 	{
 		var response = await _masterDb.GetItemTableAsync();
@@ -40,4 +40,16 @@ public class ItemData : ControllerBase
 		return response.Item2;
 	}
 
+    [HttpPost("GetUserItemList")]
+    public async Task<GetUserItemListResponse> Post(GetUserItemListRequest request)
+    {
+        var response = await _gameDb.GetUserItemListAsync(request.UserId);
+
+        if (response.errorCode != ErrorCode.None)
+        {
+            return null;
+        }
+
+        return response;
+    }
 }

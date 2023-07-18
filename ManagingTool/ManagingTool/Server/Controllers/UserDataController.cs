@@ -18,11 +18,11 @@ public class UserData : ControllerBase
         _httpClient = httpClient;
     }
 
-    [HttpPost("GetByUserID")]
-	public async Task<GetUserDataResponse> Post(GetUserDataByUserIdRequest request)
+    [HttpPost("GetUserBasicInfo")]
+	public async Task<GetUserBasicInfoListResponse> Post(GetUserBasicInfoRequest request)
 	{
-        var response = await _httpClient.PostAsJsonAsync("Managing/UserData/GetByUserID", request);
-        var responseDTO = await response.Content.ReadFromJsonAsync<GetUserDataResponse>();
+        var response = await _httpClient.PostAsJsonAsync("Managing/UserData/GetUserBasicInfo", request);
+        var responseDTO = await response.Content.ReadFromJsonAsync<GetUserBasicInfoListResponse>();
 
         if (responseDTO == null)
         {
@@ -32,11 +32,11 @@ public class UserData : ControllerBase
         return responseDTO;
     }
 
-	[HttpPost("GetByRange")]
-	public async Task<GetUserDataResponse> Post(GetUserDataByRangeRequest request)
+	[HttpPost("GetMultipleUserBasicInfo")]
+	public async Task<GetUserBasicInfoListResponse> Post(GetMultipleUserBasicInfoRequest request)
 	{
-        var response = await _httpClient.PostAsJsonAsync("Managing/UserData/GetByRange", request);
-        var responseDTO = await response.Content.ReadFromJsonAsync<GetUserDataResponse>();
+        var response = await _httpClient.PostAsJsonAsync("Managing/UserData/GetMultipleUserBasicInfo", request);
+        var responseDTO = await response.Content.ReadFromJsonAsync<GetUserBasicInfoListResponse>();
 
         if (responseDTO == null)
         {

@@ -1,20 +1,21 @@
 ﻿namespace ManagingTool.Shared.DTO;
 
-public class GetUserDataByUserIdRequest
+public class GetUserBasicInfoRequest
 {
     public Int64 UserID { get; set; }
 }
 
-public class GetUserDataResponse
-{
-    public List<UserInfo> UserInfo { get; set; }
-}
-
-public class GetUserDataByRangeRequest
+public class GetMultipleUserBasicInfoRequest
 {
 	public string Category { get; set; }
 	public Int64 MinValue { get; set; }
 	public Int64 MaxValue { get; set; }
+}
+
+public class GetUserBasicInfoListResponse
+{
+    public ErrorCode errorCode { get; set; }
+    public List<UserInfo> UserInfo { get; set; }
 }
 
 public class UserInfo

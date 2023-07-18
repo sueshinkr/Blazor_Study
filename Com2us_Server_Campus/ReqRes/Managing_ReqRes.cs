@@ -1,17 +1,18 @@
 ﻿using WebAPIServer.DataClass;
 
 namespace WebAPIServer.ReqRes;
-public class GetUserDataByUserIdRequest
+public class GetUserBasicInfoRequest
 {
     public Int64 UserID { get; set; }
 }
 
-public class GetUserDataResponse
+public class GetUserBasicInfoListResponse
 {
+    public ErrorCode errorCode { get; set; }
     public List<UserInfo> UserInfo { get; set; }
 }
 
-public class GetUserDataByRangeRequest
+public class GetMultipleUserBasicInfoRequest
 {
     public string Category { get; set; }
     public Int64 MinValue { get; set; }
@@ -28,7 +29,6 @@ public class UserInfo
     public Int64 BestClearStage { get; set; }
     public DateTime LastLogin { get; set; }
 }
-
 public class GetItemTableRequest
 {
 
@@ -58,4 +58,25 @@ public class MailForm
 	public string Content { get; set; }
 	public Int64 ItemCode { get; set; }
 	public Int64 ItemCount { get; set; }
+}
+
+public class GetUserItemListRequest
+{
+    public Int64 UserId { get; set; }
+}
+public class GetUserItemListResponse
+{
+    public ErrorCode errorCode { get; set; }
+    public List<UserItem> UserItem { get; set; }
+}
+
+public class GetUserMailListRequest
+{
+    public Int64 UserID { get; set; }
+}
+
+public class GetUserMailListResponse
+{
+    public ErrorCode errorCode { get; set; }
+    public List<MailData> UserMail { get; set; }
 }

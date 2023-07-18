@@ -12,9 +12,12 @@ public partial class GameDb : IGameDb
 {
 	// 유저 출석 데이터 로딩
 	// User_BasicInformation 테이블에서 유저 출석 정보 가져온 뒤 새로운 출석인지 아닌지 판별
-	public async Task<Tuple<ErrorCode, GetUserDataResponse>> GetUserDataByUserIdAsync(Int64 userId)
+	public async Task<GetUserBasicInfoListResponse> GetUserBasicInfoAsync(Int64 userId)
 	{
-		var response = new GetUserDataResponse();
+		var response = new GetUserBasicInfoListResponse
+		{
+			errorCode = ErrorCode.None
+		};
 		var userDataSet = new List<UserInfo>();
 		try
 		{
@@ -29,23 +32,27 @@ public partial class GameDb : IGameDb
 			userDataSet.Add(userData);
 			response.UserInfo = userDataSet;
 
-			return new Tuple<ErrorCode, GetUserDataResponse>(ErrorCode.None, response);
+			return response;
 		}
 		catch (Exception ex)
 		{
-			var errorCode = ErrorCode.GetUserDataByUserIdFailException;
+			response.errorCode = ErrorCode.GetUserDataByUserIdFailException;
 
-			_logger.ZLogError(LogManager.MakeEventId(errorCode), ex, "GetUserDataFromUserId Exception");
+			_logger.ZLogError(LogManager.MakeEventId(response.errorCode), ex, "GetUserDataFromUserId Exception");
 
-			return new Tuple<ErrorCode, GetUserDataResponse>(errorCode, null);
+			return response;
 		}
 	}
 
-	public async Task<Tuple<ErrorCode, GetUserDataResponse>> GetUserDataByRangeAsync(string category, Int64 minValue, Int64 maxValue)
+	public async Task<GetUserBasicInfoListResponse> GetMultipleUserBasicInfoAsync(string category, Int64 minValue, Int64 maxValue)
 	{
-		try
+        var response = new GetUserBasicInfoListResponse
+        {
+            errorCode = ErrorCode.None
+
+        };
+        try
 		{
-			var response = new GetUserDataResponse();
 			var userDataSet = new List<UserInfo>();
 
 			if (category == "UserID")
@@ -76,15 +83,15 @@ public partial class GameDb : IGameDb
 
 			response.UserInfo = userDataSet;
 
-			return new Tuple<ErrorCode, GetUserDataResponse>(ErrorCode.None, response);
+			return response;
 		}
 		catch(Exception ex)
 		{
-			var errorCode = ErrorCode.GetUserDataByRangeFailException;
+			response.errorCode = ErrorCode.GetUserDataByRangeFailException;
 
-			_logger.ZLogError(LogManager.MakeEventId(errorCode), ex, "GetUserDataByRange Exception");
+			_logger.ZLogError(LogManager.MakeEventId(response.errorCode), ex, "GetUserDataByRange Exception");
 
-			return new Tuple<ErrorCode, GetUserDataResponse>(errorCode, null);
+			return response;
 		}
 	}
 
@@ -133,9 +140,61 @@ public partial class GameDb : IGameDb
 		{
 			response.errorCode = ErrorCode.SendMailFailException;
 
-			_logger.ZLogError(LogManager.MakeEventId(response.errorCode), ex, "SendMailAttendanceReward Exception");
+			_logger.ZLogError(LogManager.MakeEventId(response.errorCode), ex, "SendManagingMail Exception");
 
 			return response;
 		}
 	}
+
+    public async Task<GetUserItemListResponse> GetUserItemListAsync(Int64 userId)
+    {
+		var response = new GetUserItemListResponse
+		{
+			errorCode = ErrorCode.None
+        };
+
+        var userItem = new List<UserItem>();
+
+        try
+        {
+            response.UserItem = await _queryFactory.Query("User_Item").Where("UserId", userId)
+												   .GetAsync<UserItem>() as List<UserItem>;
+
+			return response;
+        }
+        catch (Exception ex)
+        {
+            response.errorCode = ErrorCode.GetUserItemListFailException;
+
+            _logger.ZLogError(LogManager.MakeEventId(response.errorCode), ex, "GetUserItemList Exception");
+
+			return response;
+        }
+    }
+
+    public async Task<GetUserMailListResponse> GetUserMailListAsync(Int64 userId)
+    {
+        var response = new GetUserMailListResponse
+        {
+            errorCode = ErrorCode.None
+        };
+
+        var userItem = new List<UserItem>();
+
+        try
+        {
+            response.UserMail = await _queryFactory.Query("mail_data").Where("UserId", userId)
+                                                   .GetAsync<MailData>() as List<MailData>;
+
+            return response;
+        }
+        catch (Exception ex)
+        {
+            response.errorCode = ErrorCode.GetUserMailListFailException;
+
+            _logger.ZLogError(LogManager.MakeEventId(response.errorCode), ex, "GetUserMailList Exception");
+
+            return response;
+        }
+    }
 }

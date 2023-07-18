@@ -19,11 +19,25 @@ public class ItemData : ControllerBase
         _httpClient = httpClient;
     }
 
-    [HttpPost("ItemTable")]
+    [HttpPost("GetItemTable")]
 	public async Task<GetItemTableResponse> Post(GetItemTableRequest request)
 	{
-        var response = await _httpClient.PostAsJsonAsync("Managing/ItemData/ItemTable", request);
+        var response = await _httpClient.PostAsJsonAsync("Managing/ItemData/GetItemTable", request);
         var responseDTO = await response.Content.ReadFromJsonAsync<GetItemTableResponse>();
+
+        if (responseDTO == null)
+        {
+            // errorlog
+        }
+
+        return responseDTO;
+    }
+
+    [HttpPost("GetUserItemList")]
+    public async Task<GetUserItemListResponse> Post(GetUserItemListRequest request)
+    {
+        var response = await _httpClient.PostAsJsonAsync("Managing/ItemData/GetUserItemList", request);
+        var responseDTO = await response.Content.ReadFromJsonAsync<GetUserItemListResponse>();
 
         if (responseDTO == null)
         {

@@ -26,8 +26,10 @@ public interface IGameDb : IDisposable
     public Task<Tuple<ErrorCode, List<ItemInfo>, Int64>> ReceiveStageClearRewardAsync(Int64 userId, Int64 stageCode, List<ItemInfo> itemList);
     public Task<ErrorCode> UpdateStageClearDataAsync(Int64 userId, Int64 stageCode, Int64 clearRank, TimeSpan clearTime);
 
-    public Task<Tuple<ErrorCode, GetUserDataResponse>> GetUserDataByUserIdAsync(Int64 userId);
-    public Task<Tuple<ErrorCode, GetUserDataResponse>> GetUserDataByRangeAsync(string category, Int64 minValue, Int64 maxValue);
+    public Task<GetUserBasicInfoListResponse> GetUserBasicInfoAsync(Int64 userId);
+    public Task<GetUserBasicInfoListResponse> GetMultipleUserBasicInfoAsync(string category, Int64 minValue, Int64 maxValue);
     public Task<SendMailResponse> SendManagingMailAsync(MailForm mailForm, Int64 userId);
+    public Task<GetUserItemListResponse> GetUserItemListAsync(Int64 userId);
+    public Task<GetUserMailListResponse> GetUserMailListAsync(Int64 userId);
 }
 

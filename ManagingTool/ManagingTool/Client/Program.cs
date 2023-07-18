@@ -15,7 +15,7 @@ await builder.Build().RunAsync();
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-builder.Services.AddSingleton<UserDataService>();
+builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<ItemService>();
 builder.Services.AddSingleton<MailService>();
 builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
@@ -25,7 +25,7 @@ builder.Services.AddBlazoredLocalStorage();
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-UserDataService._httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();
+UserService._httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();
 ItemService._httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();
 MailService._httpClient = builder.Services.BuildServiceProvider().GetRequiredService<HttpClient>();
 

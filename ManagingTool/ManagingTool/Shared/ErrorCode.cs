@@ -7,5 +7,7 @@
     GetUserDataByRangeFailException = 11002,
     GetItemTableFailException = 11003,
     SendMailFailInsertItemIntoMail = 11004,
-    SendMailFailException = 11005
+    SendMailFailException = 11005,
+    GetUserItemListFailException = 11006,
+    GetUserMailListFailException = 11007
 }

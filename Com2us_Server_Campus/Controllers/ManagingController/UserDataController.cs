@@ -24,29 +24,19 @@ public class UserData : ControllerBase
 		_gameDb = gameDb;
     }
 
-    [HttpPost("GetByUserID")]
-	public async Task<GetUserDataResponse> Post(GetUserDataByUserIdRequest request)
+    [HttpPost("GetUserBasicInfo")]
+	public async Task<GetUserBasicInfoListResponse> Post(GetUserBasicInfoRequest request)
 	{
-		var response = await _gameDb.GetUserDataByUserIdAsync(request.UserID);
+		var response = await _gameDb.GetUserBasicInfoAsync(request.UserID);
 
-		if (response.Item1 != ErrorCode.None)
-		{
-			return null;
-		}
-
-		return response.Item2;
+		return response;
 	}
 
-	[HttpPost("GetByRange")]
-	public async Task<GetUserDataResponse> Post(GetUserDataByRangeRequest request)
+	[HttpPost("GetMultipleUserBasicInfo")]
+	public async Task<GetUserBasicInfoListResponse> Post(GetMultipleUserBasicInfoRequest request)
 	{
-		var response = await _gameDb.GetUserDataByRangeAsync(request.Category, request.MinValue, request.MaxValue);
+		var response = await _gameDb.GetMultipleUserBasicInfoAsync(request.Category, request.MinValue, request.MaxValue);
 
-		if (response.Item1 != ErrorCode.None)
-		{
-			return null;
-		}
-
-		return response.Item2;
+		return response;
 	}
 }

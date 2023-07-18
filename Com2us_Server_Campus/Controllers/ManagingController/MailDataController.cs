@@ -9,6 +9,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using ZLogger;
 using WebAPIServer.DataClass;
+using System.Net.Http;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 
 [ApiController]
@@ -40,4 +42,16 @@ public class MailData : ControllerBase
 		return response;
 	}
 
+    [HttpPost("GetUserMailList")]
+    public async Task<GetUserMailListResponse> Post(GetUserMailListRequest request)
+    {
+        var response = await _gameDb.GetUserMailListAsync(request.UserID);
+
+        if (response.errorCode != ErrorCode.None)
+        {
+            return null;
+        }
+
+        return response;
+    }
 }
