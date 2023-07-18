@@ -15,3 +15,4 @@ UserID의 특정값으로 조회하거나, 특정 값의 범위로 조회 가능
 사용한 컴포넌트    
 - TextArea : AntDesign 라이브러리의 With character counting 참고
 - Select : AntDesign 라이브러리의 Default - Toggle Datasource 참고
+- Message : AntDesign 라이브러리의 Other types of message 참고
