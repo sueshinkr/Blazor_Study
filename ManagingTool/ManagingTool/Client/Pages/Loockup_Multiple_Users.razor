@@ -7,20 +7,7 @@
 @inject UserService UserDataService
 
 
-<h3>User_Item</h3>
-
-
-@*<div class="mb-3">
-    UserID:
-    <input type="number" @bind="userId" class="form-label" name="UserID">UserID</input>
-    <button class="btn btn-primary" @onclick="GetUserItemList">Search</button>
-</div>
-
-<Table TItem="ManagingTool.Shared.DTO.UserItem" DataSource="@userItemDataSet">
-    <GenerateColumns Range="1.." Definitions=definitions />
-</Table>
-
-*@
+<h3>Lookup Multiple Users</h3>
 
 <SimpleSelect DefaultValue="UserID" Style="width:200px;" OnSelectedItemChanged="handleChange">
     <SelectOptions>
