@@ -43,7 +43,20 @@ public class ItemData : ControllerBase
     [HttpPost("GetUserItemList")]
     public async Task<GetUserItemListResponse> Post(GetUserItemListRequest request)
     {
-        var response = await _gameDb.GetUserItemListAsync(request.UserId);
+        var response = await _gameDb.GetUserItemListAsync(request.SearchType, request.SearchValue);
+
+        if (response.errorCode != ErrorCode.None)
+        {
+            return null;
+        }
+
+        return response;
+    }
+
+    [HttpPost("RetrieveUserItem")]
+    public async Task<RetrieveUserItemResponse> Post(RetrieveUserItemRequest request)
+    {
+        var response = await _gameDb.RetrieveUserItemAsync(request.SelectedItemList, request.MailForm);
 
         if (response.errorCode != ErrorCode.None)
         {

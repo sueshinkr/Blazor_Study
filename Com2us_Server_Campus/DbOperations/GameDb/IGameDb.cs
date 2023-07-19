@@ -29,7 +29,8 @@ public interface IGameDb : IDisposable
     public Task<GetUserBasicInfoListResponse> GetUserBasicInfoAsync(Int64 userId);
     public Task<GetUserBasicInfoListResponse> GetMultipleUserBasicInfoAsync(string category, Int64 minValue, Int64 maxValue);
     public Task<SendMailResponse> SendManagingMailAsync(MailForm mailForm, Int64 userId);
-    public Task<GetUserItemListResponse> GetUserItemListAsync(Int64 userId);
+    public Task<GetUserItemListResponse> GetUserItemListAsync(string searchType, Int64 searchValue);
     public Task<GetUserMailListResponse> GetUserMailListAsync(Int64 userId);
+    public Task<RetrieveUserItemResponse> RetrieveUserItemAsync(List<Tuple<Int64, Int64>> selectedItemList, MailForm? mailForm);
 }
 

@@ -47,4 +47,18 @@ public class ItemData : ControllerBase
         return responseDTO;
     }
 
+    [HttpPost("RetrieveUserItem")]
+    public async Task<RetrieveUserItemResponse> Post(RetrieveUserItemRequest request)
+    {
+        var response = await _httpClient.PostAsJsonAsync("Managing/ItemData/RetrieveUserItem", request);
+        var responseDTO = await response.Content.ReadFromJsonAsync<RetrieveUserItemResponse>();
+
+        if (responseDTO == null)
+        {
+            // errorlog
+        }
+
+        return responseDTO;
+    }
+
 }

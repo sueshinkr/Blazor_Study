@@ -9,5 +9,6 @@
     SendMailFailInsertItemIntoMail = 11004,
     SendMailFailException = 11005,
     GetUserItemListFailException = 11006,
-    GetUserMailListFailException = 11007
+    GetUserMailListFailException = 11007,
+    RetrieveUserItemFailException = 11008
 }

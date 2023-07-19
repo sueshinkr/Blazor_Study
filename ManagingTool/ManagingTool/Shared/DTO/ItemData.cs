@@ -20,7 +20,8 @@ public class ItemAttribute
 
 public class GetUserItemListRequest
 {
-    public Int64 UserId { get; set; }
+    public string SearchType { get; set; }  
+    public Int64 SearchValue { get; set; }
 }
 public class GetUserItemListResponse
 {
@@ -40,5 +41,15 @@ public class UserItem
     public Int64 EnhanceCount { get; set; }
     public bool IsDestroyed { get; set; }
     public DateTime ObtainedAt { get; set; }
+}
+
+public class RetrieveUserItemRequest
+{
+    public List<Tuple<Int64, Int64>> SelectedItemList { get; set; }
+    public MailForm? MailForm { get; set; }
+}
+public class RetrieveUserItemResponse
+{
+    public ErrorCode errorCode { get; set; }
 }
 

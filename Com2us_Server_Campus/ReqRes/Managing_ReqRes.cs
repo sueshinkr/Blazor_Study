@@ -52,6 +52,7 @@ public class SendMailResponse
 {
     public ErrorCode errorCode { get; set; }
 }
+
 public class MailForm
 {
 	public string Title { get; set; }
@@ -62,8 +63,10 @@ public class MailForm
 
 public class GetUserItemListRequest
 {
-    public Int64 UserId { get; set; }
+    public string SearchType { get; set; }
+    public Int64 SearchValue { get; set; }
 }
+
 public class GetUserItemListResponse
 {
     public ErrorCode errorCode { get; set; }
@@ -79,4 +82,14 @@ public class GetUserMailListResponse
 {
     public ErrorCode errorCode { get; set; }
     public List<MailData> UserMail { get; set; }
+}
+
+public class RetrieveUserItemRequest
+{
+    public List<Tuple<Int64, Int64>> SelectedItemList { get; set; }
+    public MailForm? MailForm { get; set; }
+}
+public class RetrieveUserItemResponse
+{
+    public ErrorCode errorCode { get; set; }
 }

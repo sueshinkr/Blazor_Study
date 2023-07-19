@@ -5,6 +5,7 @@ using WebAPIServer.DataClass;
 using WebAPIServer.Util;
 using ZLogger;
 using WebAPIServer.ReqRes;
+using IdGen;
 
 namespace WebAPIServer.DbOperations;
 
@@ -146,7 +147,7 @@ public partial class GameDb : IGameDb
 		}
 	}
 
-    public async Task<GetUserItemListResponse> GetUserItemListAsync(Int64 userId)
+    public async Task<GetUserItemListResponse> GetUserItemListAsync(string searchType, Int64 searchValue)
     {
 		var response = new GetUserItemListResponse
 		{
@@ -157,8 +158,21 @@ public partial class GameDb : IGameDb
 
         try
         {
-            response.UserItem = await _queryFactory.Query("User_Item").Where("UserId", userId)
-												   .GetAsync<UserItem>() as List<UserItem>;
+			if (searchType == "UserID")
+			{
+				response.UserItem = await _queryFactory.Query("User_Item").Where("UserId", searchValue)
+													   .GetAsync<UserItem>() as List<UserItem>;
+			}
+			else if (searchType == "ItemID")
+			{
+                response.UserItem = await _queryFactory.Query("User_Item").Where("ItemId", searchValue)
+                                                       .GetAsync<UserItem>() as List<UserItem>;
+            }
+			else if (searchType == "ItemCode")
+			{
+                response.UserItem = await _queryFactory.Query("User_Item").Where("ItemCode", searchValue)
+                                                       .GetAsync<UserItem>() as List<UserItem>;
+            }
 
 			return response;
         }
@@ -193,6 +207,47 @@ public partial class GameDb : IGameDb
             response.errorCode = ErrorCode.GetUserMailListFailException;
 
             _logger.ZLogError(LogManager.MakeEventId(response.errorCode), ex, "GetUserMailList Exception");
+
+            return response;
+        }
+    }
+
+    public async Task<RetrieveUserItemResponse> RetrieveUserItemAsync(List<Tuple<Int64, Int64>> selectedItemList, MailForm? mailForm)
+    {
+        var response = new RetrieveUserItemResponse
+        {
+            errorCode = ErrorCode.None
+        };
+
+        try
+        {
+			foreach (var item in selectedItemList)
+			{
+				await _queryFactory.Query("User_Item").Where("ItemId", item.Item1)
+                                   .DeleteAsync();
+				if (mailForm != null)
+				{
+					await _queryFactory.Query("Mail_Data").Where("UserId", item.Item2)
+									   .InsertAsync(new
+									   {
+										   MailId = _idGenerator.CreateId(),
+										   UserId = item.Item2,
+										   SenderId = 0,
+										   Title = mailForm.Title,
+										   Content = mailForm.Content,
+										   hasItem = false,
+										   ExpiredAt = DateTime.Now.AddDays(7)
+									   });
+				}
+			}
+
+            return response;
+        }
+        catch (Exception ex)
+        {
+            response.errorCode = ErrorCode.RetrieveUserItemFailException;
+
+            _logger.ZLogError(LogManager.MakeEventId(response.errorCode), ex, "RetrieveUserItem Exception");
 
             return response;
         }

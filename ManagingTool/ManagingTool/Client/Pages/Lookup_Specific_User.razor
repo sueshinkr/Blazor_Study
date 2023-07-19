@@ -19,17 +19,18 @@
 <Tabs @bind-ActiveKey="@activeKey" Animated>
     <TabPane Tab="BasicInfo" Key="1">
         <Table TItem="UserInfo" DataSource="@userDataSet">
-            <GenerateColumns Range="1.." Definitions=definitions />
+            <GenerateColumns Range="0.." Definitions=definitions />
         </Table>
     </TabPane>
     <TabPane Tab="Item" Key="2">
-        <Table TItem="UserItem" DataSource="@userItemDataSet">
-            <GenerateColumns Range="1.." Definitions=definitions />
+        <Table TItem="UserItem" DataSource="@userItemDataSet" @bind-SelectedRows="selectedRows">
+            <Selection Key="@(context.ItemId.ToString())" />
+            <GenerateColumns Range="0.." Definitions=definitions />
         </Table>
     </TabPane>
     <TabPane Tab="Mail" Key="3">
         <Table TItem="MailData" DataSource="@userMailDataSet">
-            <GenerateColumns Range="1.." Definitions=definitions />
+            <GenerateColumns Range="0.." Definitions=definitions />
         </Table>
     </TabPane>
 </Tabs>
@@ -37,6 +38,7 @@
 
 @code {
     string activeKey { get; set; } = "1";
+    IEnumerable<UserItem> selectedRows;
 
     void definitions(string propertyName, object column)
     {
@@ -70,7 +72,7 @@
     {
         userItemDataSet.Clear();
 
-        var response = await ItemService.GetUserItemList(userId);
+        var response = await ItemService.GetUserItemList("UserID", userId);
         userItemDataSet = response.UserItem;
     }
 
