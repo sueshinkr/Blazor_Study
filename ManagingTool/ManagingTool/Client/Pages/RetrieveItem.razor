@@ -6,7 +6,6 @@
 @inject IMessageService _message
 @inject INotificationService _notice
 
-
 <h3>Retrieve Item</h3>
 
 <div>
@@ -28,8 +27,24 @@
     <GenerateColumns Range="0.." Definitions=definitions />
 </Table>
 
+<Button Type="primary" OnClick="@(()=>{ if (selectedRows != null && selectedRows.Count() != 0) _visible = true; else ErrorMessage(); })">
+    Retrieve
+</Button>
+@{
+    RenderFragment footer = @<Template>
+        <Button OnClick="@(async ()=>{ await RetrieveButtonClick(); await SuccessMessage();})" @key="@( "Confirm" )"
+            Type="primary" Loading="@_loading">Confirm</Button>
+        <Button OnClick="@(()=>{ _visible = false; })" @key="@( "Cancel" )">Cancel</Button>
+</Template>;
+}
 
-<button class="btn btn-primary" @onclick="RetrieveButtonClick">Retrieve</button>
+<Modal Title="!WARNING!"
+       Visible="@_visible"
+       OnOk="@RetrieveButtonClick"
+       OnCancel="@(()=>{ _visible = false; })"
+       Footer="@footer">
+    <p>이 행동은 되돌릴 수 없습니다. 정말로 데이터를 삭제하시겠습니까?</p>
+</Modal>
 
 <div>
     <Checkbox @bind-Checked="sendMail">
@@ -44,6 +59,8 @@
     Int64 searchValue = 0;
     IEnumerable<UserItem> selectedRows;
     Boolean sendMail = true;
+    bool _visible = false;
+    bool _loading = false;
 
     List<UserItem> UserItemDataSet = new();
     MailForm? mailForm = new MailForm
@@ -60,29 +77,20 @@
         column.SetValue("Filterable", true);
     }
 
-    private async Task RetrieveButtonClick()
+    async Task RetrieveButtonClick()
     {
-        string key = $"open{DateTime.Now}";
-        RenderFragment confirmbtn = 
-    @<Button Type="@ButtonType.Primary" OnClick="async () => { await RetrieveUserItem(); await _notice.Close(key); await SuccessMessage(); }">
-                                    confirm
-        </Button>
-    ;
-
-        await _notice.Open(new NotificationConfig()
-        {
-            Message = "!WARNING!",
-            Description = "이 행동은 되돌릴 수 없습니다. 정말로 데이터를 삭제하시겠습니까?",
-            Duration = 0,
-            Key = key,
-            Placement = NotificationPlacement.Top,
-            Btn = confirmbtn
-        });
+        await RetrieveUserItem();
+        _visible = false;
     }
 
-    private async Task SuccessMessage()
+    async Task SuccessMessage()
     {
         await _message.Success("Retrieve Item Success!");
+    }
+
+    async Task ErrorMessage()
+    {
+        await _message.Error("No Selected Item!");
     }
 
     async Task GetUserItemList()
@@ -95,8 +103,10 @@
 
     async Task RetrieveUserItem()
     {
-        if (selectedRows != null)
+        if (selectedRows.Count() != 0)
         {
+            _loading = true;
+
             if (sendMail == true)
             {
                 var response = await ItemService.RetrieveUserItem(selectedRows, mailForm);
@@ -107,6 +117,12 @@
             }
 
             await GetUserItemList();
+
+            _loading = false;
+        }
+        else
+        {
+            await ErrorMessage();
         }
     }
 
