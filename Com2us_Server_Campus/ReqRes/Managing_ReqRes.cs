@@ -19,6 +19,16 @@ public class GetMultipleUserBasicInfoRequest
     public Int64 MaxValue { get; set; }
 }
 
+public class UpdateUserBasicInformationRequest
+{
+    public UserInfo UserInfo { get; set; }
+}
+
+public class UpdateUserBasicInformationResponse
+{
+    public ErrorCode errorCode { get; set; }
+}
+
 public class UserInfo
 {
     public Int64 AccountID { get; set; }

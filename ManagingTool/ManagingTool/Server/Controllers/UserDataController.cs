@@ -46,4 +46,18 @@ public class UserData : ControllerBase
 
         return responseDTO;
     }
+
+    [HttpPost("UpdateUserBasicInfo")]
+    public async Task<UpdateUserBasicInformationResponse> Post(UpdateUserBasicInformationRequest request)
+    {
+        var response = await _httpClient.PostAsJsonAsync("Managing/UserData/UpdateUserBasicInfo", request);
+        var responseDTO = await response.Content.ReadFromJsonAsync<UpdateUserBasicInformationResponse>();
+
+        if (responseDTO == null)
+        {
+            // errorlog
+        }
+
+        return responseDTO;
+    }
 }

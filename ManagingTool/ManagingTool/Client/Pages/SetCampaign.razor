@@ -43,7 +43,7 @@
 
 <EventConsole @ref=@console />
 
- @code {
+    @code {
     bool allowVirtualization;
 
     RadzenScheduler<AppointmentData> scheduler;
@@ -60,6 +60,8 @@
         campaigns.Add(new Campaign { Title = "신규 이벤트", Content = "기간내 최초 접속시 아이템 지급", CampaignType = 2, CampaignItemCode = 2, CampaignItemCount = 1 });
         campaigns.Add(new Campaign { Title = "특별 경험치 버닝", Content = "캠페인 기간동안 사냥 획득 경험치 200% 상승", CampaignType = 1, BoostValue = 2 });
 
+        appointments.Add(new AppointmentData { Start = DateTime.Today, End = DateTime.Now.AddDays(7), Text = "신규 이벤트" });
+
         return base.OnInitializedAsync();
     }
 
@@ -71,6 +73,12 @@
 
     async Task SetNewCampaign(Campaign campaign)
     {
+        if (period == null || period.Count == 0)
+        {
+            await _message.Error("기간을 설정해주세요.");
+            return;
+        };
+
         AppointmentData data = new AppointmentData
         {
             Start = period[0],

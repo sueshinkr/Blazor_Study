@@ -8,7 +8,7 @@ public class UserService
 {
     public static HttpClient _httpClient { get; set; }
 
-    public async Task<GetUserBasicInfoListResponse> GetUserBasicInfo(long userId)
+    public async Task<GetUserBasicInfoListResponse> GetUserBasicInfo(Int64 userId)
     {
         var request = new GetUserBasicInfoRequest
         {
@@ -26,7 +26,7 @@ public class UserService
         return responseDTO;
     }
 
-    public async Task<List<UserInfo>> GetMultipleUserBasicInfo(string category, long minValue, long maxValue)
+    public async Task<List<UserInfo>> GetMultipleUserBasicInfo(string category, Int64 minValue, Int64 maxValue)
     {
         var request = new GetMultipleUserBasicInfoRequest
         {
@@ -44,6 +44,24 @@ public class UserService
         }
 
         return responseDTO.UserInfo;
+    }
+
+    public async Task<UpdateUserBasicInformationResponse> UpdateUserBasicInfo(UserInfo userInfo)
+    {
+        var request = new UpdateUserBasicInformationRequest
+        {
+            UserInfo = userInfo
+        };
+
+        var response = await _httpClient.PostAsJsonAsync("api/UserData/UpdateUserBasicInfo", request);
+        var responseDTO = await response.Content.ReadFromJsonAsync<UpdateUserBasicInformationResponse>();
+
+        if (responseDTO == null)
+        {
+            // errorlog
+        }
+
+        return responseDTO;
     }
 }
 

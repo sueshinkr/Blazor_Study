@@ -10,5 +10,6 @@
     SendMailFailException = 11005,
     GetUserItemListFailException = 11006,
     GetUserMailListFailException = 11007,
-    RetrieveUserItemFailException = 11008
+    RetrieveUserItemFailException = 11008,
+    UpdateUserBasicInfoFailException = 11009
 }

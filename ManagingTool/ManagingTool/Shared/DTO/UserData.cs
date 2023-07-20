@@ -28,3 +28,13 @@ public class UserInfo
     public Int64 BestClearStage { get; set; }
     public DateTime LastLogin { get; set; }
 }
+
+public class UpdateUserBasicInformationRequest
+{
+    public UserInfo UserInfo { get; set; }
+}
+
+public class UpdateUserBasicInformationResponse
+{
+    public ErrorCode errorCode { get; set; }
+}

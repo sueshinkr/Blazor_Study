@@ -96,7 +96,42 @@ public partial class GameDb : IGameDb
 		}
 	}
 
-	public async Task<SendMailResponse> SendManagingMailAsync(MailForm mailForm, Int64 userId)
+    public async Task<UpdateUserBasicInformationResponse> UpdateUserBasicInfoAsync(UserInfo userInfo)
+    {
+        var response = new UpdateUserBasicInformationResponse
+        {
+            errorCode = ErrorCode.None
+        };
+        var userDataSet = new List<UserInfo>();
+        try
+        {
+            var isSuccess = await _queryFactory.Query("User_BasicInformation").Where("UserID", userInfo.UserID)
+                                               .UpdateAsync(new
+											   {
+												   Level = userInfo.Level,
+												   Exp = userInfo.Exp,
+												   Money = userInfo.Money,
+												   BestClearStage = userInfo.BestClearStage
+											   });
+
+            if (isSuccess == 0)
+            {
+                // error
+            }
+
+            return response;
+        }
+        catch (Exception ex)
+        {
+            response.errorCode = ErrorCode.UpdateUserBasicInfoFailException;
+
+            _logger.ZLogError(LogManager.MakeEventId(response.errorCode), ex, "UpdateUserBasicInfo Exception");
+
+            return response;
+        }
+    }
+
+    public async Task<SendMailResponse> SendManagingMailAsync(MailForm mailForm, Int64 userId)
 	{
 		var mailId = _idGenerator.CreateId();
 		var response = new SendMailResponse

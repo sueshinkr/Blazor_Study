@@ -39,4 +39,12 @@ public class UserData : ControllerBase
 
 		return response;
 	}
+
+    [HttpPost("UpdateUserBasicInfo")]
+    public async Task<UpdateUserBasicInformationResponse> Post(UpdateUserBasicInformationRequest request)
+    {
+        var response = await _gameDb.UpdateUserBasicInfoAsync(request.UserInfo);
+
+        return response;
+    }
 }
