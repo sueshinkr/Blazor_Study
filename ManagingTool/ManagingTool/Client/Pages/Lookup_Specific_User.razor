@@ -17,12 +17,9 @@
     <button class="btn btn-primary" @onclick="GetUserData" >Search</button>
 </div>
 
-@*editCache.ContainsKey(data.UserID)*@
-
 <Tabs @bind-ActiveKey="@activeKey" Animated>
     <TabPane Tab="BasicInfo" Key="1">
         <Table TItem="UserInfo" DataSource="@userDataSet" RowClassName="@(_=>"editable-row")">
-            @*<GenerateColumns Range="0.." Definitions=definitions  />*@
            <ChildContent Context="data">
                     <PropertyColumn Property="c=>c.AccountID" Sortable="true" Filterable="true">
                     </PropertyColumn>
@@ -105,31 +102,16 @@
 
 @code {
 
-    Dictionary<Int64, (bool edit, UserInfo data)> editCache = new Dictionary<Int64, (bool edit, UserInfo data)>();
+    IDictionary<Int64, (bool edit, UserInfo data)> editCache = new Dictionary<Int64, (bool edit, UserInfo data)>();
 
-    bool dataLoaded = false;
+    Int64 userId = 0;
 
-    void startEdit(Int64 id)
-    {
-        //var data = userDataSet.FirstOrDefault(item => item.UserID == id);
-        editCache[id] = (true, editCache[id].data);
-    }
+    List<UserInfo> userDataSet = new();
+    List<UserItem> userItemDataSet = new();
+    List<MailData> userMailDataSet = new();
 
-    void cancelEdit(Int64 id)
-    {
-        var data = userDataSet.FirstOrDefault(item => item.UserID == id);
-        editCache[id] = (false, data); // recovery
-    }
-
-    async void saveEdit(Int64 id)
-    {
-        var index = userDataSet.FindIndex(item => item.UserID == id);
-        userDataSet[index] = editCache[id].data; // apply the copy to data source
-        editCache[id] = (false, userDataSet[index]); // don't affect rows in editing
-
-        await UserDataService.UpdateUserBasicInfo(userDataSet[index]);
-        await sessionStorage.SetItemAsync<List<UserInfo>>("userinfo", userDataSet);
-    }
+    string activeKey { get; set; } = "1";
+    IEnumerable<UserItem> selectedRows;
 
     protected override async Task OnInitializedAsync()
     {
@@ -162,22 +144,6 @@
         }
     }
 
-    string activeKey { get; set; } = "1";
-    IEnumerable<UserItem> selectedRows;
-
-    void definitions(string propertyName, object column)
-    {
-        column.SetValue("Sortable", true);
-        column.SetValue("Filterable", true);
-    }
-
-    Int64 userId = 0;
-
-
-    List<UserInfo> userDataSet = new();
-    List<UserItem> userItemDataSet = new();
-    List<MailData> userMailDataSet = new();
-
     async Task GetUserData()
     {
         await GetUserBasicInfo();
@@ -198,7 +164,16 @@
 
         userDataSet.ForEach(item =>
         {
-            editCache[item.UserID] = (false, item);
+            editCache[item.UserID] = (false, new UserInfo
+            {
+                AccountID = item.AccountID,
+                UserID = item.UserID,
+                Level = item.Level,
+                Exp = item.Exp,
+                Money = item.Money,
+                BestClearStage = item.BestClearStage,
+                LastLogin = item.LastLogin
+            });
         });
     }
 
@@ -220,5 +195,39 @@
         userMailDataSet = response.UserMail;
 
         await sessionStorage.SetItemAsync<List<MailData>>("maildata", userMailDataSet);
+    }
+
+    void startEdit(Int64 id)
+    {
+        editCache[id] = (true, editCache[id].data);
+    }
+
+    void cancelEdit(Int64 id)
+    {
+        var data = userDataSet.FirstOrDefault(item => item.UserID == id);
+        editCache[id].data.Level = data.Level;
+        editCache[id].data.Exp = data.Exp;
+        editCache[id].data.Money = data.Money;
+        editCache[id].data.BestClearStage = data.BestClearStage;
+        editCache[id] = (false, editCache[id].data);
+    }
+
+    async void saveEdit(Int64 id)
+    {
+        var index = userDataSet.FindIndex(item => item.UserID == id);
+        userDataSet[index].Level = editCache[id].data.Level;
+        userDataSet[index].Exp = editCache[id].data.Exp;
+        userDataSet[index].Money = editCache[id].data.Money;
+        userDataSet[index].BestClearStage = editCache[id].data.BestClearStage;
+        editCache[id] = (false, editCache[id].data);
+
+        await UserDataService.UpdateUserBasicInfo(userDataSet[index]);
+        await sessionStorage.SetItemAsync<List<UserInfo>>("userinfo", userDataSet);
+    }
+
+    void definitions(string propertyName, object column)
+    {
+        column.SetValue("Sortable", true);
+        column.SetValue("Filterable", true);
     }
 }

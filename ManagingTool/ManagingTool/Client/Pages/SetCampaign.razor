@@ -43,7 +43,7 @@
 
 <EventConsole @ref=@console />
 
-    @code {
+@code {
     bool allowVirtualization;
 
     RadzenScheduler<AppointmentData> scheduler;
@@ -94,15 +94,10 @@
 
         console.Log($"New Campaign={data.Text}:{data.Start}~{data.End}");
         await _message.Success("Success!");
-
-        // TODO
-        // 등록된 캠페인 정보는 당연히 서버에 있어야함
-        // 처음에도 당연히 서버에 있는걸 우선 가져와야함...
     }
 
     void OnSlotRender(SchedulerSlotRenderEventArgs args)
     {
-        // Highlight today in month view
         if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
         {
             args.Attributes["style"] = "background: rgba(255,220,40,.2);";
@@ -120,7 +115,6 @@
 
     void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<AppointmentData> args)
     {
-        // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
         if (args.Data.Text == "Birthday")
         {
             args.Attributes["style"] = "background: red";

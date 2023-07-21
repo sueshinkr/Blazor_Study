@@ -105,8 +105,8 @@ public partial class GameDb : IGameDb
         var userDataSet = new List<UserInfo>();
         try
         {
-            var isSuccess = await _queryFactory.Query("User_BasicInformation").Where("UserID", userInfo.UserID)
-                                               .UpdateAsync(new
+			var isSuccess = await _queryFactory.Query("User_BasicInformation").Where("UserID", userInfo.UserID)
+											   .UpdateAsync(new
 											   {
 												   Level = userInfo.Level,
 												   Exp = userInfo.Exp,
