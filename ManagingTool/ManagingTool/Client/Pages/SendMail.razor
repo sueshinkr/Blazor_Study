@@ -23,13 +23,11 @@
 <br />
 <br />
 
-
 <Select TItem="ItemAttribute"
         TItemValue="ItemAttribute"
         DataSource="@itemList"
         @bind-Value="@selectedItem"
         LabelName="@nameof(ItemAttribute.Name)"
-        @*ValueName="@nameof(ItemAttribute.Code)"*@
         EnableSearch
         DefaultValue=null
         Placeholder="Select an Item"
@@ -64,14 +62,19 @@
 <button class="btn btn-primary" @onclick="SendMailByUserID">Send</button>
 
 @code {
+
+
     string title = string.Empty;
     string content = string.Empty;
+
     Int64 userId = 0;
+    Int64 itemCount = 0;
+
+    List<ItemAttribute> itemList = new List<ItemAttribute>();
 
     ItemTable itemTable = new ItemTable();
-    List<ItemAttribute> itemList;
-    ItemAttribute selectedItem;
-    Int64 itemCount = 0;
+    ItemAttribute selectedItem = new ItemAttribute();
+    MailForm mailForm = new MailForm();
 
     class ItemTable
     {
@@ -80,8 +83,6 @@
         public List<ItemAttribute> itemClothes { get; set; }
         public List<ItemAttribute> itemMagicTool { get; set; }
     }
-
-    MailForm mailForm = new MailForm();
 
     protected override async Task OnInitializedAsync()
     {
@@ -140,8 +141,20 @@
     {
         mailForm.Title = title;
         mailForm.Content = content;
-        mailForm.ItemCode = selectedItem == null ? 0 : selectedItem.Code;
+        mailForm.ItemCode = selectedItem.Code;
         mailForm.ItemCount = itemCount;
+
+        if (userId == 0)
+        {
+            await _message.Error("Please Write UserID!");
+            return;
+        }
+
+        if (mailForm.Title == string.Empty || mailForm.Content == string.Empty)
+        {
+            await _message.Error("Please Write Title and Content!");
+            return;
+        }
 
         var isSuccess = await MailService.SendMail(mailForm, userId);
         if (isSuccess.errorCode == ErrorCode.None)
@@ -149,6 +162,4 @@
             await _message.Success("Send Mail Success!");
         }
     }
-
-   
 }

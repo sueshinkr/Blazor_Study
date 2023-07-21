@@ -10,10 +10,10 @@
 7. [구성 요소 수명주기에 따른 함수 활용](#구성-요소-수명주기에-따른-함수-활용)
 8. [상태 유지](#상태-유지)
 9. [컴포넌트 소개 및 활용](#컴포넌트-소개-및-활용)
-
+10. [예시 페이지 상세설명](#예시-페이지-상세설명)
 ---
 
-### Blazor란
+## Blazor란
 
 Microsoft의 오픈소스 웹 개발 프레임워크이다.    
 일반적으로 웹 개발시 사용되는 JavaScript 대신 .Net Core와 WebAssembly를 기반으로 C#을 사용하여 웹 UI를 빌드할 수 있다.
@@ -31,7 +31,7 @@ Blazor Server와 Blazor Webassembly 모델로 구분할 수 있으며, 각각의
 
 ---
 
-### 시작하기
+## 시작하기
 
 ![](images/2023-07-20-14-45-01.png)
 Visual Studio 2022 기준 Blazor 서버 앱 또는 Blazor WebAssembly 앱 템플릿을 선택할 수 있다.    
@@ -59,7 +59,7 @@ Blazor WebAssembly(WASM) 앱의 자산은 정적 파일로 배포되는데, 이 
 
 ---
 
-### 클라이언트 구성
+## 클라이언트 구성
 
 ![](images/2023-07-20-15-38-13.png)
 
@@ -82,7 +82,7 @@ SurveyPrompt.razor 파일은 Blazor 설문 조사 구성 요소이므로 삭제�
 
 #### App.razor 파일
 클라이언트의 라우팅을 설정하는 구성 요소 파일이다.    
-기본적으로 잘못된 라우팅에 대한 처리도 되어있음을 확인할 수 있다.    
+\<NotFound> 항목으로 잘못된 라우팅에 대한 처리가 되어있음을 확인할 수 있다.    
 
 #### Program.cs 파일
 앱의 진입점으로 호스트 설정, 서비스 등록등의 작업이 이루어지는 파일이다.
@@ -91,7 +91,7 @@ SurveyPrompt.razor 파일은 Blazor 설문 조사 구성 요소이므로 삭제�
 
 ---
 
-### 페이지 구성
+## 페이지 구성
 ![](images/2023-07-20-15-31-49.png)
 
 @page : 해당 페이지가 라우팅되는 url 작성       
@@ -108,11 +108,13 @@ SurveyPrompt.razor 파일은 Blazor 설문 조사 구성 요소이므로 삭제�
 * `@page “/{숫자 전달:int}`
 * `@page “/루트이름/{카테고리}/{숫자:int}`
 
+
+
 <br/>
 
 ---
 
-### 컴포넌트 사용 예시
+## 컴포넌트 사용 예시
 
 ![](images/2023-07-20-15-49-50.png)
 
@@ -128,7 +130,7 @@ SurveyPrompt.razor 파일은 Blazor 설문 조사 구성 요소이므로 삭제�
 
 ---
 
-### 라이브러리 활용
+## 라이브러리 활용
 
 솔루션 생성시 css 폴더 내부에 bootstrap 폴더가 존재하는 것을 볼 수 있는데, 이는 오픈소스 라이브러리로 다양한 컴포넌트들을 반응형으로 지원한다.    
 그밖에도 Radzen, Ant Design 등의 다양한 라이브러리가 존재하므로 이를 활용하여 다양한 컴포넌트들을 사용할 수 있다.    
@@ -141,7 +143,7 @@ SurveyPrompt.razor 파일은 Blazor 설문 조사 구성 요소이므로 삭제�
 
 ---
 
-### 구성 요소 수명주기에 따른 함수 활용
+## 구성 요소 수명주기에 따른 함수 활용
 
 ![](images/2023-07-20-16-32-17.png)
 
@@ -163,7 +165,7 @@ StateHasChanged() 함수는 EventCallback 메서드에 대해 자동으로 호�
 
 ---
 
-### 상태 유지
+## 상태 유지
 
 상태를 유지하기 위해서는 Blazored.LocalStorage 또는 BLazored.SessionStorage 패키지가 필요하다.    
 * LocalStorage : 브라우저를 닫았다 열거나 하는 경우에도 명시적으로 데이터를 지우지 않는 한 상태가 유지되며, 탭을 여러 개 여는 경우 탭 간의 상태가 공유됨    
@@ -180,9 +182,9 @@ StateHasChanged() 함수는 EventCallback 메서드에 대해 자동으로 호�
 
 ---
 
-### 컴포넌트 소개 및 활용
+## 컴포넌트 소개 및 활용
 
-#### Button
+### Button
 
 BootStrap의 Button 컴포넌트를 아래와 같이 사용할 수 있다.    
     
@@ -207,7 +209,7 @@ class에는 사용할 버튼의 디자인을 지정할 수 있으며, 디자인�
 
 ---
 
-#### TextBox
+### TextBox
  
 Ant Design의 TextBox 컴포넌트를 아래와 같이 사용할 수 있다.    
 단, Ant Design 라이브러리를 사용하기 위해서는 사전 작업이 필요하므로 아래의 링크를 참고하도록 한다.     
@@ -239,7 +241,7 @@ OnChange 옵션으로 함수를 실행하여 입력받는 문자를 변수에 �
 
 ---
 
-#### ComboBox
+### ComboBox
 
 Ant Design의 ComboBox 컴포넌트를 아래와 같이 사용할 수 있다.    
 
@@ -272,7 +274,7 @@ TextBox와 마찬가지로 목록 중 선택한 값이 Value 패러미터에 저
 
 ---
 
-#### 리스트박스
+### 리스트박스
 
 Radzen의 ListBox 컴포넌트를 아래와 같이 사용할 수 있다.
 단, Radzen 라이브러리를 사용하기 위해서는 사전 작업이 필요하므로 아래의 링크를 참고하도록 한다. 
@@ -307,7 +309,7 @@ Radzen 라이브러리의 컴포넌트 역시 이 외에도 여러 옵션을 사
 
 ---
 
-#### CheckBox
+### CheckBox
 
 Ant Design의 CheckBox 컴포넌트를 아래와 같이 사용할 수 있다.    
 
@@ -331,7 +333,7 @@ Ant Design의 CheckBox 컴포넌트를 아래와 같이 사용할 수 있다.
 
 ---
 
-#### RadioBox
+### RadioBox
 
 Ant Design의 RadioBox 컴포넌트를 아래와 같이 사용할 수 있다.    
 
@@ -357,7 +359,7 @@ RadioButton 옵션을 해제하면 일반적인 RadioBox의 디자인을 사용�
 
 ---
 
-#### Tabs
+### Tabs
 
 Ant Design의 Tabs 컴포넌트를 아래와 같이 사용할 수 있다.  
 
@@ -385,7 +387,7 @@ Ant Design의 Tabs 컴포넌트를 아래와 같이 사용할 수 있다.
 
 ---
 
-#### Message
+### Message
 
 Ant Design의 Message 컴포넌트를 아래와 같이 사용할 수 있다.  
 
@@ -409,7 +411,7 @@ Ant Design의 Message 컴포넌트를 아래와 같이 사용할 수 있다.
 
 --- 
 
-#### Modal
+### Modal
 
 Ant Design의 Modal 컴포넌트를 아래와 같이 사용할 수 있다.
 
@@ -454,3 +456,463 @@ Footer 옵션은 선택사항이며, 사용하지 않을경우 footer를 따로 
 이 때는 OkText와 CancleText 옵션을 통해 각각 버튼에 표기될 텍스트를 설정할 수 있다.    
 
 [참고 : Ant Design 라이브러리의 Modal 컴포넌트 문서](https://antblazor.com/en-US/components/modal)
+
+<br>
+
+---
+
+## 예시 페이지 상세설명
+
+### 페이지 공통
+
+게임 서버와의 API 통신을 해야하는 경우 우선 각 페이지에서 필요한 서비스의 함수를 호출한다.    
+이후 해당 서비스에서 웹 어플리케이션의 서버로 API를 호출하고, 호출된 웹 어플리케이션 서버의 컨트롤러에서 다시 게임 서버로 API를 호출하는 구조로 이루어져있다.        
+
+
+### 특정 사용자 조회
+![](images/2023-07-21-17-43-27.png)
+
+특정 사용자를 UserID로 검색하여 DB로부터 데이터를 읽어오는 페이지이다.
+
+사용된 주요 컴포넌트
+- Input (Bootstrap)
+
+    ```html
+    UserID:
+    <input type="number" @bind="userId" class="form-label" name="UserID">UserID</input>
+
+    @code
+    {
+        Int64 userId = 0;
+    }
+    ```
+    검색할 userId를 입력받는 컴포넌트이다. 
+
+- Button (Bootstrap)
+
+    ```html
+    <button class="btn btn-primary" @onclick="GetUserData" >Search</button>
+
+    @code
+    {
+        async Task GetUserData()
+        {
+            await GetUserBasicInfo();
+            await GetUserItemList();
+            await GetUserMail();
+
+            await sessionStorage.SetItemAsync<Int64>("userid", userId);
+        }
+    }
+    ```
+    클릭시 GetUserData 함수를 호출하여 실질적인 로직이 진행되도록 하는 컴포넌트이다.    
+
+- Tabs (Ant Design)
+
+    ```html
+    <Tabs @bind-ActiveKey="@activeKey" Animated>
+        <TabPane Tab="BasicInfo" Key="1">
+            ...
+        </TabPane>
+        <TabPane Tab="Item" Key="2">
+            ...
+        </TabPane>
+        <TabPane Tab="Mail" Key="3">
+            ...
+        </TabPane>
+    </Tabs>
+    
+    @code
+    {
+        string activeKey { get; set; } = "1";
+    }
+    ```
+    BasicInfo, Item, Mail에 관한 데이터를 각각 탭으로 분리하여 표시되도록 하는 컴포넌트이다.    
+
+- Table (Ant Design)
+
+    ```html
+    <Table TItem="UserInfo" DataSource="@userDataSet" RowClassName="@(_=>"editable-row")">
+        <ChildContent Context="data">
+                ...
+        </ChildContent>
+    </Table>
+    <Table TItem="UserItem" DataSource="@userItemDataSet">
+        <GenerateColumns Range="0.." Definitions=definitions />
+    </Table>
+    <Table TItem="MailData" DataSource="@userMailDataSet">
+        <GenerateColumns Range="0.." Definitions=definitions />
+    </Table>
+
+    @code
+    {
+        List<UserInfo> userDataSet = new();
+        List<UserItem> userItemDataSet = new();
+        List<MailData> userMailDataSet = new();
+
+        void definitions(string propertyName, object column)
+        {
+            column.SetValue("Sortable", true);
+            column.SetValue("Filterable", true);
+        }
+    }
+    ```
+    UserInfo에 사용된 테이블과 UserItem, MailData에 사용된 테이블의 생성 방식이 다르게 구성되어있다.
+    - UserItem, MailData 테이블    
+        DB에서 가져온 정보가 저장되어있는 데이터셋을 DataSource로 전달하고, 해당 자료형에 맞게 자동으로 Column을 생성하는 GenerateColumns 옵션을 사용하였다.    
+        또한 Definitions 옵션으로 각 Column마다 정의될 Action을 설정하는 함수를 지정하였고, 해당 함수에서는 각 Column에 정렬과 필터 기능을 사용 가능하도록 설정하였다.
+    - UserDataSet 테이블
+        ![](images/2023-07-21-17-00-23.png)
+        ```html
+        <ChildContent Context="data">
+            <PropertyColumn Property="c=>c.AccountID" Sortable="true" Filterable="true" />
+            <PropertyColumn Property="c=>c.UserID" Sortable="true" Filterable="true" />
+            <PropertyColumn Property="c=>c.Level" Sortable="true" Filterable="true">
+                @if (!editCache.ContainsKey(data.UserID) || !editCache[data.UserID].edit)
+                {
+                    @data.Level
+                }
+                else
+                {
+                    <Input @bind-Value="editCache[data.UserID].data.Level" />
+                }
+            </PropertyColumn>
+            ...
+            ...
+            <ActionColumn Title="Action">
+                @if (!editCache.ContainsKey(data.UserID) || !editCache[data.UserID].edit)
+                {
+                    <a @onclick="() => startEdit(data.UserID)" class="edit">Edit</a>
+                }
+                else
+                {
+                    <Popconfirm Title="Sure to Save?"
+                        OnConfirm="() => saveEdit(data.UserID)"
+                        OkText="Yes"
+                        CancelText="No">
+                        <a class="save">Save</a>
+                    </Popconfirm>
+                    <a @onclick="() => cancelEdit(data.UserID)">Cancel</a>
+                }
+            </ActionColumn>
+        </ChildContent>
+        ```
+
+        ```c#
+        @code
+        {
+            IDictionary<Int64, (bool edit, UserInfo data)> editCache = new Dictionary<Int64, (bool edit, UserInfo data)>();
+
+            void startEdit(Int64 id)
+            {
+                editCache[id] = (true, editCache[id].data);
+            }
+
+            void cancelEdit(Int64 id)
+            {
+                var data = userDataSet.FirstOrDefault(item => item.UserID == id);
+                editCache[id].data.Level = data.Level;
+                editCache[id].data.Exp = data.Exp;
+                editCache[id].data.Money = data.Money;
+                editCache[id].data.BestClearStage = data.BestClearStage;
+                editCache[id] = (false, editCache[id].data);
+            }
+
+            async void saveEdit(Int64 id)
+            {
+                var index = userDataSet.FindIndex(item => item.UserID == id);
+                userDataSet[index].Level = editCache[id].data.Level;
+                userDataSet[index].Exp = editCache[id].data.Exp;
+                userDataSet[index].Money = editCache[id].data.Money;
+                userDataSet[index].BestClearStage = editCache[id].data.BestClearStage;
+                editCache[id] = (false, editCache[id].data);
+
+                await UserDataService.UpdateUserBasicInfo(userDataSet[index]);
+                await sessionStorage.SetItemAsync<List<UserInfo>>("userinfo", userDataSet);
+            }
+        }
+        ```
+        데이터 수정 기능을 구현하기 위해서는 수정하고자하는 특정 Column의 새로운 임시 입력값이 필요하며, 이를 저장하기 위해 Dictionary 변수인 editCache를 사용하였다.        
+        
+        Action Column에서 Edit을 누르면 startEdit() 함수가 실행되어 editCache의 bool값이 true가 되고, 이를 수정하는 Column이 인식하여 새롭게 Input을 띄운 후 수정값을 입력하면 editCache에 저장된다.    
+        이 때 GenerateColumns 옵션을 사용하면 Column이 조건에 따라 Input을 받도록 하는 작업이 불가능했기 때문에 PropertyColumn 옵션으로 각각의 Column들을 따로 생성하여 데이터를 매치시켜주었다.
+
+        이후 Cancel 버튼을 누를 경우 cancelEdit() 함수가 실행되어 userDataSet에 저장되어있는 원래 값으로 원복한다.    
+        Save 버튼을 누를 경우에는 saveEdit() 함수가 실행되어 userDataSet의 데이터를 수정된 값으로 변경하고, UserDataService의 UpdateUserBasicInfo() 함수를 통해 DB를 갱신하는 작업을 진행한다.    
+
+        작업이 끝난 후에는 공통적으로 editCache의 bool값을 false로 변경하여 수정 작업이 끝났음을 알린다.    
+
+    추가로 본 페이지에는 상태 유지 기능이 구현되어있다.    
+    즉, 다른 페이지를 열었다 다시 돌아온 후에도 페이지에 로딩되어있는 데이터가 유지된다.     
+    이는 위 [상태 유지](#상태-유지) 항목에서 설명한 것처럼 Blazor의 SessionStorage 기능을 활용하여 다음과 같은 방식으로 작동되도록 하였다.   
+
+    1. 유저 데이터를 받아온 이후 각각의 데이터셋을 `sessionStorage.SetItemAsync<>()` 함수로 세션에 저장
+    2. 페이지를 새로 로딩시 `OnInitializedAsync()` 함수에서 `sessionStorage.GetItemAsync<>()` 함수로 불러온 데이터셋을 각 변수에 저장
+
+<br>
+
+---
+
+### 다수 사용자 조회
+
+![](images/2023-07-21-17-46-53.png)
+
+다수의 사용자를 지정한 속성의 범위값으로 검색하여 DB로부터 데이터를 읽어오는 페이지이다.
+
+사용된 주요 컴포넌트
+- ComboBox (Ant Design)
+
+    ```html
+    <SimpleSelect DefaultValue="UserID" Style="width:200px;" OnSelectedItemChanged="handleChange">
+        <SelectOptions>
+            <SimpleSelectOption Value="UserID" Label="UserID"></SimpleSelectOption>
+            <SimpleSelectOption Value="Level" Label="Level"></SimpleSelectOption>
+            <SimpleSelectOption Value="Money" Label="Money"></SimpleSelectOption>
+            <SimpleSelectOption Value="BestClearStage" Label="BestClearStage"></SimpleSelectOption>
+            <SimpleSelectOption Value="LastLogin" Label="LastLogin"></SimpleSelectOption>
+        </SelectOptions>
+    </SimpleSelect>
+
+    @code
+    {
+        string category = "UserID";
+
+        void handleChange(string value)
+        {
+            category = value;
+        }
+    }
+    ```
+    검색할 속성값을 목록에서 선택하는 컴포넌트이다.
+
+- Input (Bootstrap)
+
+    ```html
+    Min:
+    <input type="number" @bind="minValue" class="form-label" name="Min">Min</input>
+    Max:
+    <input type="number" @bind="maxValue" class="form-label" name="Max">Max</input>
+
+    @code
+    {
+        Int64 minValue = 0;
+        Int64 maxValue = 0;
+    }
+    ```
+    검색할 범위값을 입력받는 컴포넌트이다. 
+
+- Button (Bootstrap)
+
+    ```html
+    <button class="btn btn-primary" @onclick="GetMultipleUserBasicInfo">Search</button>
+
+    @code
+    {
+        async Task GetMultipleUserBasicInfo()
+        {
+            userDataSet.Clear();
+
+            userDataSet = await UserDataService.GetMultipleUserBasicInfo(category, minValue, maxValue);
+        }
+    }
+    ```
+    클릭시 GetMultipleUserBasicInfo() 함수를 호출하여 실질적인 로직이 진행되도록 하는 컴포넌트이다.
+
+- Table (Ant Design)
+
+    ```html
+    <Table TItem="UserInfo" DataSource="@userDataSet">
+        <GenerateColumns Range="0.." Definitions=definitions />
+    </Table>
+
+    @code
+    {
+        List<UserInfo> userDataSet = new();
+
+        void definitions(string propertyName, object column)
+        {
+            column.SetValue("Sortable", true);
+            column.SetValue("Filterable", true);
+        }
+    }
+    ```
+    받아온 데이터들을 테이블로 표시하는 컴포넌트이다.
+
+각 컴포넌트들의 구조 및 사용방법은 위 항목들에서 설명했던 것들과 동일하다.
+
+<br/>
+
+--- 
+
+### 메일 전송
+
+![](images/2023-07-21-18-02-34.png)
+
+특정 사용자에게 메일을 전송하는 페이지이다.    
+메일에는 아이템이 포함되어있을 수 있다.
+
+사용된 주요 컴포넌트
+- Input (Bootstrap)
+
+    ```html
+    UserID:
+    <input type="number" @bind="userId" @bind:event="oninput" class="form-label" name="UserID">UserID</input>
+
+    ItemCount:
+    <input type="number" @bind="itemCount" class="form-label" name="ItemCount">ItemCount</input>
+
+    @code
+    {
+        Int64 userId = 0;
+        Int64 itemCount = 0;
+    }
+    ```
+    메일을 보낼 대상과 첨부할 아이템의 개수를 입력하는 컴포넌트이다.
+
+- Button (Bootstrap)
+
+    ```c#
+    <button class="btn btn-primary" @onclick="SendMailByUserID">Send</button>
+
+    @code
+    {
+        MailForm mailForm = new MailForm();
+
+        private async Task SendMailByUserID()
+        {
+            mailForm.Title = title;
+            mailForm.Content = content;
+            mailForm.ItemCode = selectedItem.Code;
+            mailForm.ItemCount = itemCount;
+
+            if (userId == 0)
+            {
+                await _message.Error("Please Write UserID!");
+                return;
+            }
+
+            if (mailForm.Title == string.Empty || mailForm.Content == string.Empty)
+            {
+                await _message.Error("Please Write Title and Content!");
+                return;
+            }
+
+            var isSuccess = await MailService.SendMail(mailForm, userId);
+            if (isSuccess.errorCode == ErrorCode.None)
+            {
+                await _message.Success("Send Mail Success!");
+            }
+        }
+    }
+    ```
+    클릭시 SendMailByUserID() 함수를 호출하여 실질적인 로직이 진행되도록 하는 컴포넌트이다.
+
+- TextBox (Ant Design)
+
+    ```html
+    Title:
+    <TextArea ShowCount Placeholder="메일 제목을 입력해주세요" MaxLength=100 OnChange="onChange_title" AutoSize="false" />
+
+    Content:
+    <TextArea ShowCount Placeholder="메일 내용을 입력해주세요" MaxLength=2000 OnChange="onChange_content" AutoSize="true" />
+
+    @code
+    {
+        void onChange_title(string value)
+        {
+            title = value;
+        }
+
+        void onChange_content(string value)
+        {
+            content = value;
+        }
+    }
+    ```
+    메일 제목과 본문을 텍스트로 입력받는 컴포넌트이다.    
+    MaxLength 옵션으로 최대 길이를, AutoSize 옵션으로 입력창 크기를 자동으로 조절할 것인지를 설정하였다.    
+
+- ComboBox (Ant Design)
+
+    ```html
+    <Select TItem="ItemAttribute"
+        TItemValue="ItemAttribute"
+        DataSource="@itemList"
+        @bind-Value="@selectedItem"
+        LabelName="@nameof(ItemAttribute.Name)"
+        EnableSearch
+        DefaultValue=null
+        Placeholder="Select an Item"
+        OnSelectedItemChanged="OnSelectedItemChangedHandler"
+        SortByLabel="@SortDirection.Ascending"
+        AllowClear
+        Style="width: calc(100% - 68px);">
+    </Select>
+
+    @code
+    {
+        List<ItemAttribute> itemList = new List<ItemAttribute>();
+        ItemAttribute selectedItem = new ItemAttribute();
+
+        void OnSelectedItemChangedHandler(ItemAttribute value)
+        {
+            selectedItem = value;
+        }
+    }
+    ```
+    메일에 첨부할 아이템을 목록에서 선택하는 컴포넌트이다.    
+    EnableSearch 옵션을 사용하여 검색이 가능하게 하였다.    
+
+
+- DropDown (Ant Design)
+
+    ```html
+    <Dropdown Style="padding-left: 8px;" Trigger="@(new Trigger[] { Trigger.Click })">
+        <Overlay>
+            <Menu Selectable="false">
+                <MenuItem OnClick="@SetWeaponList">Weapon LIst</MenuItem>
+                <MenuItem OnClick="@SetArmorList">Armor List</MenuItem>
+                <MenuItem OnClick="@SetClothesList">Clothes List</MenuItem>
+                <MenuItem OnClick="@SetMagicToolList">MagicTool List</MenuItem>
+                <MenuItem OnClick="@ClearDS">Clear</MenuItem>
+            </Menu>
+        </Overlay>
+        <ChildContent>
+            <a class="ant-dropdown-link" @onclick:preventDefault>Actions<Icon Type="down" /></a>
+        </ChildContent>
+    </Dropdown>
+
+    @code
+    {
+        void SetWeaponList()
+        {
+            itemList = itemTable.itemWeapon;
+        }
+        
+        ...
+        ...
+
+        private void ClearDS()
+        {
+            itemList = null;
+            selectedItem = null;
+        }
+    }
+    ```
+    ComboBox에 표기할 목록을 선택하는 컴포넌트이다.    
+    ComboBox의 목록은 DataSource로 지정한 itemList에서 가져오는데, 이 itemList를 변경하여 카테고리별로 목록이 표기되도록 한다.    
+
+- Message (Ant Design)
+
+    ```c#
+    await _message.Error("Please Write UserID!");
+    await _message.Error("Please Write Title and Content!");
+    await _message.Success("Send Mail Success!");
+    ```
+    화면에 팝업 메시지를 띄우는 컴포넌트이다.
+
+
+
+<br/>
+
+--- 

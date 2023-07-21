@@ -21,10 +21,8 @@
     <TabPane Tab="BasicInfo" Key="1">
         <Table TItem="UserInfo" DataSource="@userDataSet" RowClassName="@(_=>"editable-row")">
            <ChildContent Context="data">
-                    <PropertyColumn Property="c=>c.AccountID" Sortable="true" Filterable="true">
-                    </PropertyColumn>
-                    <PropertyColumn Property="c=>c.UserID" Sortable="true" Filterable="true">
-                    </PropertyColumn>
+                    <PropertyColumn Property="c=>c.AccountID" Sortable="true" Filterable="true" />
+                    <PropertyColumn Property="c=>c.UserID" Sortable="true" Filterable="true" />
                     <PropertyColumn Property="c=>c.Level" Sortable="true" Filterable="true">
                         @if (!editCache.ContainsKey(data.UserID) || !editCache[data.UserID].edit)
                         {
@@ -75,20 +73,19 @@
                         else
                         {
                             <Popconfirm Title="Sure to Save?"
-                            OnConfirm="() => saveEdit(data.UserID)"
-                            OkText="Yes"
-                            CancelText="No">
-                                <a>Save</a>
+                                OnConfirm="() => saveEdit(data.UserID)"
+                                OkText="Yes"
+                                CancelText="No">
+                                <a class="save">Save</a>
                             </Popconfirm>
-                            <a @onclick="() => cancelEdit(data.UserID)" class="cancle">Cancle</a>
+                            <a @onclick="() => cancelEdit(data.UserID)">Cancel</a>
                         }
                     </ActionColumn>
             </ChildContent>
         </Table>
     </TabPane>
     <TabPane Tab="Item" Key="2">
-        <Table TItem="UserItem" DataSource="@userItemDataSet" @bind-SelectedRows="selectedRows">
-            <Selection Key="@(context.ItemId.ToString())" />
+        <Table TItem="UserItem" DataSource="@userItemDataSet">
             <GenerateColumns Range="0.." Definitions=definitions />
         </Table>
     </TabPane>
@@ -111,7 +108,6 @@
     List<MailData> userMailDataSet = new();
 
     string activeKey { get; set; } = "1";
-    IEnumerable<UserItem> selectedRows;
 
     protected override async Task OnInitializedAsync()
     {
@@ -230,4 +226,8 @@
         column.SetValue("Sortable", true);
         column.SetValue("Filterable", true);
     }
+
+
 }
+
+
