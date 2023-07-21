@@ -9,7 +9,7 @@
 6. [라이브러리 활용](#라이브러리-활용)
 7. [구성 요소 수명주기에 따른 함수 활용](#구성-요소-수명주기에-따른-함수-활용)
 8. [상태 유지](#상태-유지)
-9. [컴포넌트 소개 및 사용예시]
+9. [컴포넌트 소개 및 활용](#컴포넌트-소개-및-활용)
 
 ---
 
@@ -180,7 +180,7 @@ StateHasChanged() 함수는 EventCallback 메서드에 대해 자동으로 호�
 
 ---
 
-### 컴포넌트 소개 및 사용예시
+### 컴포넌트 소개 및 활용
 
 #### Button
 
@@ -203,7 +203,7 @@ class에는 사용할 버튼의 디자인을 지정할 수 있으며, 디자인�
 `@onclick` 속성으로 버튼 클릭시에 이루어질 행동을 지정한 함수를 실행한다.    
 `<button ...>`과 `</button>` 사이의 텍스트는 버튼에 표기할 글자이다.    
 
-[참고 : Bootstrap의 Button 문서](https://getbootstrap.com/docs/5.3/components/buttons/)    
+[참고 : Bootstrap의 Button 컴포넌트 문서](https://getbootstrap.com/docs/5.3/components/buttons/)    
 
 ---
 
