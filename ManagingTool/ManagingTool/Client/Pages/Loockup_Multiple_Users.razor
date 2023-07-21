@@ -32,7 +32,6 @@
     <GenerateColumns Range="0.." Definitions=definitions />
 </Table>
 
-
 @code {
     Int64 userId = 0;
     string category = "UserID";
@@ -59,4 +58,8 @@
         userDataSet = await UserDataService.GetMultipleUserBasicInfo(category, minValue, maxValue);
     }
 }
+
+
+
+
 

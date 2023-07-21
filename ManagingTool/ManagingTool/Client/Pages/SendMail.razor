@@ -20,6 +20,9 @@
     <TextArea ShowCount Placeholder="메일 내용을 입력해주세요" MaxLength=2000 OnChange="onChange_content" AutoSize="true" />
 </div>
 
+<br />
+<br />
+
 
 <Select TItem="ItemAttribute"
         TItemValue="ItemAttribute"
@@ -92,37 +95,37 @@
         itemList = itemTable.itemWeapon;
     }
 
-    private async void onChange_title(string value)
+    void onChange_title(string value)
     {
         title = value;
     }
 
-    private void onChange_content(string value)
+    void onChange_content(string value)
     {
         content = value;
     }
 
-    private void OnSelectedItemChangedHandler(ItemAttribute value)
+    void OnSelectedItemChangedHandler(ItemAttribute value)
     {
         selectedItem = value;
     }
 
-    private void SetWeaponList()
+    void SetWeaponList()
     {
         itemList = itemTable.itemWeapon;
     }
 
-    private void SetArmorList()
+    void SetArmorList()
     {
         itemList = itemTable.itemArmor;
     }
 
-    private void SetClothesList()
+    void SetClothesList()
     {
         itemList = itemTable.itemClothes;
     }
 
-    private void SetMagicToolList()
+    void SetMagicToolList()
     {
         itemList = itemTable.itemMagicTool;
     }

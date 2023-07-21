@@ -30,18 +30,20 @@
 <Button Type="primary" OnClick="@(()=>{ if (selectedRows != null && selectedRows.Count() != 0) _visible = true; else ErrorMessage(); })">
     Retrieve
 </Button>
+
 @{
-    RenderFragment footer = @<Template>
-        <Button OnClick="@(async ()=>{ await RetrieveButtonClick(); await SuccessMessage();})" @key="@( "Confirm" )"
-            Type="primary" Loading="@_loading">Confirm</Button>
-        <Button OnClick="@(()=>{ _visible = false; })" @key="@( "Cancel" )">Cancel</Button>
-</Template>;
+    RenderFragment footer =
+    @<Template>
+        <Button OnClick="@(async ()=>{ await RetrieveButtonClick(); await SuccessMessage();})"
+                Type="primary" Loading="@_loading">
+            Confirm
+        </Button>
+        <Button OnClick="@(()=>{ _visible = false; })">Cancel</Button>
+    </Template>;
 }
 
 <Modal Title="!WARNING!"
        Visible="@_visible"
-       OnOk="@RetrieveButtonClick"
-       OnCancel="@(()=>{ _visible = false; })"
        Footer="@footer">
     <p>이 행동은 되돌릴 수 없습니다. 정말로 데이터를 삭제하시겠습니까?</p>
 </Modal>
@@ -58,7 +60,7 @@
     string searchType = "ItemID";
     Int64 searchValue = 0;
     IEnumerable<UserItem> selectedRows;
-    Boolean sendMail = true;
+    bool sendMail = true;
     bool _visible = false;
     bool _loading = false;
 
@@ -86,7 +88,7 @@
 
     async Task SuccessMessage()
     {
-        await _message.Success("Retrieve Item Success!");
+        await _message.Success("Retrieve Item Success!", 10);
     }
 
     async Task ErrorMessage()

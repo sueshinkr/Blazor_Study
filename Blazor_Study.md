@@ -9,6 +9,7 @@
 6. [라이브러리 활용](#라이브러리-활용)
 7. [구성 요소 수명주기에 따른 함수 활용](#구성-요소-수명주기에-따른-함수-활용)
 8. [상태 유지](#상태-유지)
+9. [컴포넌트 소개 및 사용예시]
 
 ---
 
@@ -175,3 +176,281 @@ StateHasChanged() 함수는 EventCallback 메서드에 대해 자동으로 호�
 
 페이지에 재접속시 `OnInitialized()` 함수에서 `sessionStorage.SetItemAsync()` 함수로 저장되어있는 상태가 있는지 확인하는 방식으로 활용할 수 있다.    
 
+<br>
+
+---
+
+### 컴포넌트 소개 및 사용예시
+
+#### Button
+
+BootStrap의 Button 컴포넌트를 아래와 같이 사용할 수 있다.    
+    
+![](images/2023-07-21-12-35-54.png)
+
+```html
+<button class="btn btn-primary" @onclick="Function">ButtonText</button>
+
+@code
+{
+    void Function()
+    {
+        ...
+    }
+}
+```
+class에는 사용할 버튼의 디자인을 지정할 수 있으며, 디자인의 종류는 아래의 링크에서 확인할 수 있다.   
+`@onclick` 속성으로 버튼 클릭시에 이루어질 행동을 지정한 함수를 실행한다.    
+`<button ...>`과 `</button>` 사이의 텍스트는 버튼에 표기할 글자이다.    
+
+[참고 : Bootstrap의 Button 문서](https://getbootstrap.com/docs/5.3/components/buttons/)    
+
+---
+
+#### TextBox
+ 
+Ant Design의 TextBox 컴포넌트를 아래와 같이 사용할 수 있다.    
+단, Ant Design 라이브러리를 사용하기 위해서는 사전 작업이 필요하므로 아래의 링크를 참고하도록 한다.     
+
+![](images/2023-07-21-11-53-03.png)
+
+```html
+Title:
+    <TextArea ShowCount Placeholder="메일 제목을 입력해주세요" MaxLength=100 OnChange="onChange_title" AutoSize="false" />
+Content:
+    <TextArea ShowCount Placeholder="메일 내용을 입력해주세요" MaxLength=2000 OnChange="onChange_content" AutoSize="true" />
+
+@code
+{
+    string title = string.Empty;
+
+    void onChange_title(string value)
+    {
+        title = value;
+    }
+}
+```
+ShowCount, Placeholder, MaxLength 등의 옵션을 필요한대로 자유롭게 사용할 수 있다.    
+OnChange 옵션으로 함수를 실행하여 입력받는 문자를 변수에 저장한다.    
+입력받는 문자는 내부적으로 Value 패러미터가 string 형식으로 저장되며, OnChange 옵션으로 함수 호출시 해당 패러미터가 매개변수로 사용된다.    
+
+[참고 : Ant Design 라이브러리 사전작업 설명 문서](https://antblazor.com/en-US/docs/getting-started)    
+[참고 : Ant Design 라이브러리 Input 컴포넌트 문서](https://antblazor.com/en-US/components/input)    
+
+---
+
+#### ComboBox
+
+Ant Design의 ComboBox 컴포넌트를 아래와 같이 사용할 수 있다.    
+
+![](images/2023-07-21-12-23-56.png)
+
+```html
+<SimpleSelect DefaultValue="AAA" Style="width:200px;" OnSelectedItemChanged="handleChange">
+    <SelectOptions>
+        <SimpleSelectOption Value="AAA" Label="AAA"></SimpleSelectOption>
+        <SimpleSelectOption Value="BBB" Label="BBB"></SimpleSelectOption>
+        <SimpleSelectOption Value="CCC" Label="CCC"></SimpleSelectOption>
+        <SimpleSelectOption Value="DDD" Label="DDD"></SimpleSelectOption>
+        <SimpleSelectOption Value="EEE" Label="EEE"></SimpleSelectOption>
+    </SelectOptions>
+</SimpleSelect>
+
+@code
+{
+    string category = string.Empty;
+
+    void handleChange(string value)
+    {
+        category = value;
+    }
+}
+```
+TextBox와 마찬가지로 목록 중 선택한 값이 Value 패러미터에 저장되기 때문에 이를 활용할 수 있다.    
+
+[참고 : Ant Design 라이브러리의 Select 컴포넌트 문서](https://antblazor.com/en-US/components/select)    
+
+---
+
+#### 리스트박스
+
+Radzen의 ListBox 컴포넌트를 아래와 같이 사용할 수 있다.
+단, Radzen 라이브러리를 사용하기 위해서는 사전 작업이 필요하므로 아래의 링크를 참고하도록 한다. 
+
+![](images/2023-07-21-14-43-15.png)
+
+```html
+<RadzenListBox @bind-Value=@selectedSampleID Data=@sampleList ValueProperty="SampleID" Style="width: 100%; max-width: 400px; height: 200px">
+    <Template>
+        Sample Name : @((context as Sample).Name)
+    </Template>
+</RadzenListBox>
+
+@code
+{
+    public class Sample
+    {
+        public string Name { get; set; }
+        public Int64 SampleID { get; set; }
+    }
+
+    Int64 selectedSampleID = 0;
+    List<Sample> sampleList = new List<Sample>();
+}
+```
+
+ValueProperty 옵션으로 저장할 항목을 지정하고, `@bind-Value`로 리스트에서 선택한 항목의 SampleID를 변수에 저장하도록 하였다.   
+Radzen 라이브러리의 컴포넌트 역시 이 외에도 여러 옵션을 사용할 수 있다.    
+
+[참고 : Radzen 라이브러리의 ListBox 컴포넌트 문서](https://blazor.radzen.com/listbox)
+[참고 : Radzen 라이브러리 사전작업 설명 문서](https://blazor.radzen.com/get-started?theme=material)
+
+---
+
+#### CheckBox
+
+Ant Design의 CheckBox 컴포넌트를 아래와 같이 사용할 수 있다.    
+
+![](images/2023-07-21-12-48-45.png)
+
+```html
+<Checkbox @bind-Checked="isChecked">
+    Phrases to display 
+</Checkbox>
+
+@code
+{
+    bool isCheckd = false;
+}
+```
+
+위와 같이 체크 여부만을 체크해서 사용할 수도 있고, OnChange 옵션을 추가하여 체크시 곧바로 함수를 실행시킬 수도 있다.
+
+
+[참고 : Ant Design 라이브러리의 CheckBox 컴포넌트 문서](https://antblazor.com/en-US/components/checkbox)      
+
+---
+
+#### RadioBox
+
+Ant Design의 RadioBox 컴포넌트를 아래와 같이 사용할 수 있다.    
+
+![](images/2023-07-21-12-36-37.png)
+
+```html
+<RadioGroup @bind-Value="@Type">
+    <Radio RadioButton Value="@("AAA")">AAA</Radio>
+    <Radio RadioButton Value="@("BBB")">BBB</Radio>
+    <Radio RadioButton Value="@("CCC")">CCC</Radio>
+</RadioGroup>
+
+@code
+{
+    string Type = string.Empty;
+}
+```
+
+RadioButton 옵션을 해제하면 일반적인 RadioBox의 디자인을 사용할 수 있다.         
+위에서 봤던 컴포넌트들과 달리 Value 패러미터가 TValue 형식으로 저장되기 때문에 Value값 설정을 다르게 해주어야한다.    
+
+[참고 : Ant Design 라이브러리의 Radio 컴포넌트 문서](https://antblazor.com/en-US/components/radio)   
+
+---
+
+#### Tabs
+
+Ant Design의 Tabs 컴포넌트를 아래와 같이 사용할 수 있다.  
+
+![](images/2023-07-21-15-03-12.png)
+
+```html
+<Tabs @bind-ActiveKey="@activeKey" Animated>
+    <TabPane Tab="Tab1" Key="1">
+    </TabPane>
+    <TabPane Tab="Tab2" Key="2">
+    </TabPane>
+    <TabPane Tab="Tab3" Key="3">
+    </TabPane>
+</Tabs>
+
+@code
+{
+    string activeKey { get; set; } = "1";
+}
+```
+
+몇번째 탭인지 지정할 키가 될 변수를 지정 후 사용한다.    
+
+[참고 : Ant Design 라이브러리의 Tabs 컴포넌트 문서](https://antblazor.com/en-US/components/tabs)
+
+---
+
+#### Message
+
+Ant Design의 Message 컴포넌트를 아래와 같이 사용할 수 있다.  
+
+![](images/2023-07-21-15-07-37.png)
+
+```c#
+@inject IMessageService _message
+
+@code
+{
+    async Task SuccessMessage()
+    {
+        await _message.Success("Retrieve Item Success!");
+    }
+}
+```
+
+메시지로 띄우고자 하는 문자열 뒤에 double형 매개변수를 사용하여 메시지가 띄워져있는 시간을 설정할 수도 있다.
+
+[참고 : Ant Design 라이브러리의 Message 컴포넌트 문서](https://antblazor.com/en-US/components/message)
+
+--- 
+
+#### Modal
+
+Ant Design의 Modal 컴포넌트를 아래와 같이 사용할 수 있다.
+
+![](images/2023-07-21-15-28-05.png)
+
+```html
+<Button Type="primary" OnClick="@(()=>{ _visible = true; })">
+    Button
+</Button>
+
+@{
+    RenderFragment footer =
+    @<Template>
+        <Button Type="primary" OnClick="@(async ()=>{ await Confirm(); })" Loading="@_loading">Confirm</Button>
+        <Button OnClick="@(()=>{ _visible = false; })">Cancel</Button>
+    </Template>;
+}
+
+<Modal Title="!WARNING!"
+       Visible="@_visible"
+       Footer="@footer">
+    <p>이 행동은 되돌릴 수 없습니다. 정말로 데이터를 삭제하시겠습니까?</p>
+</Modal>
+
+@code
+{
+    bool _visible = false;
+    bool _loading = false;
+
+    async Task Confirm()
+    {
+        _loading = true;
+        await DeleteItem();
+        _loading = false;
+        _visible = false;
+    }
+}
+```
+
+Visible 변수로 Modal dialog를 띄울지 여부를 판단한다.    
+Footer 옵션은 선택사항이며, 사용하지 않을경우 footer를 따로 작성하지 않고 Modal의 OnOk와 OnCancel 옵션을 사용할 수 있다.    
+이 때는 OkText와 CancleText 옵션을 통해 각각 버튼에 표기될 텍스트를 설정할 수 있다.    
+
+[참고 : Ant Design 라이브러리의 Modal 컴포넌트 문서](https://antblazor.com/en-US/components/modal)
