@@ -15,26 +15,24 @@
             <RadzenRow Gap="0">
                 <RadzenColumn Size="12" SizeLG="3" Class="rz-p-4 product-title">
                     <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-color-secondary">@(campaign.Title)</RadzenText>
-                    </RadzenColumn>
-                    <RadzenColumn Size="12" SizeLG="7" Class="rz-p-4">
-                        <RadzenRow Gap="0">
-                            <RadzenColumn Size="12" SizeMD="6" SizeLG="2">
-                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" Class="rz-mb-0"></RadzenText>
-                                <RadzenText TextStyle="TextStyle.Body2">@(campaign.Content)</RadzenText>
-                            </RadzenColumn>
-                        </RadzenRow>
-                    </RadzenColumn>
-                    <RadzenColumn Size="12" SizeLG="2" Class="rz-p-4">
-                        <RadzenButton Text="Set Campaign" Style="width: 100%" Click=@(args => SetNewCampaign(campaign)) />
-                    </RadzenColumn>
-                </RadzenRow>
-            </RadzenCard>
-        </Template>
+                </RadzenColumn>
+                <RadzenColumn Size="12" SizeLG="7" Class="rz-p-4">
+                    <RadzenRow Gap="0">
+                            <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" Class="rz-mb-0"></RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body2">@(campaign.Content)</RadzenText>
+                    </RadzenRow>
+                </RadzenColumn>
+                <RadzenColumn Size="12" SizeLG="2" Class="rz-p-4">
+                    <RadzenButton Text="Set Campaign" Style="width: 100%" Click=@(args => SetNewCampaign(campaign)) />
+                </RadzenColumn>
+            </RadzenRow>
+        </RadzenCard>
+     </Template>
 </RadzenDataList>
 
 <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" TItem="AppointmentData" Data=@appointments StartProperty="Start" EndProperty="End"
                     TextProperty="Text" SelectedIndex="2"
-                    AppointmentSelect=@OnAppointmentSelect AppointmentRender=@OnAppointmentRender>
+                    AppointmentSelect=@OnAppointmentSelect>
     <RadzenDayView />
     <RadzenWeekView />
     <RadzenMonthView />
@@ -44,7 +42,7 @@
 <EventConsole @ref=@console />
 
  @code {
-    bool allowVirtualization;
+    bool allowVirtualization = false;
 
     RadzenScheduler<AppointmentData> scheduler;
     EventConsole console;
@@ -111,13 +109,5 @@
         await DialogService.OpenAsync<EditAppointmentPage>("Edit Appointment", new Dictionary<string, object> { { "Appointment", args.Data } });
 
         await scheduler.Reload();
-    }
-
-    void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<AppointmentData> args)
-    {
-        if (args.Data.Text == "Birthday")
-        {
-            args.Attributes["style"] = "background: red";
-        }
     }
 }

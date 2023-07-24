@@ -474,7 +474,8 @@ Footer 옵션은 선택사항이며, 사용하지 않을경우 footer를 따로 
 
 특정 사용자를 UserID로 검색하여 DB로부터 데이터를 읽어오는 페이지이다.
 
-사용된 주요 컴포넌트
+#### 사용된 주요 컴포넌트
+
 - Input (Bootstrap)
 
     ```html
@@ -642,12 +643,14 @@ Footer 옵션은 선택사항이며, 사용하지 않을경우 footer를 따로 
 
         작업이 끝난 후에는 공통적으로 editCache의 bool값을 false로 변경하여 수정 작업이 끝났음을 알린다.    
 
-    추가로 본 페이지에는 상태 유지 기능이 구현되어있다.    
-    즉, 다른 페이지를 열었다 다시 돌아온 후에도 페이지에 로딩되어있는 데이터가 유지된다.     
-    이는 위 [상태 유지](#상태-유지) 항목에서 설명한 것처럼 Blazor의 SessionStorage 기능을 활용하여 다음과 같은 방식으로 작동되도록 하였다.   
+#### 추가 기술사항
 
-    1. 유저 데이터를 받아온 이후 각각의 데이터셋을 `sessionStorage.SetItemAsync<>()` 함수로 세션에 저장
-    2. 페이지를 새로 로딩시 `OnInitializedAsync()` 함수에서 `sessionStorage.GetItemAsync<>()` 함수로 불러온 데이터셋을 각 변수에 저장
+추가로 본 페이지에는 상태 유지 기능이 구현되어있다.    
+즉, 다른 페이지를 열었다 다시 돌아온 후에도 페이지에 로딩되어있는 데이터가 유지된다.     
+이는 위 [상태 유지](#상태-유지) 항목에서 설명한 것처럼 Blazor의 SessionStorage 기능을 활용하여 다음과 같은 방식으로 작동되도록 하였다.    
+
+1. 유저 데이터를 받아온 이후 각각의 데이터셋을 `sessionStorage.SetItemAsync<>()` 함수로 세션에 저장
+2. 페이지를 새로 로딩시 `OnInitializedAsync()` 함수에서 `sessionStorage.GetItemAsync<>()` 함수로 불러온 데이터셋을 각 변수에 저장
 
 <br>
 
@@ -659,7 +662,8 @@ Footer 옵션은 선택사항이며, 사용하지 않을경우 footer를 따로 
 
 다수의 사용자를 지정한 속성의 범위값으로 검색하여 DB로부터 데이터를 읽어오는 페이지이다.
 
-사용된 주요 컴포넌트
+#### 사용된 주요 컴포넌트
+
 - ComboBox (Ant Design)
 
     ```html
@@ -748,10 +752,10 @@ Footer 옵션은 선택사항이며, 사용하지 않을경우 footer를 따로 
 
 ![](images/2023-07-21-18-02-34.png)
 
-특정 사용자에게 메일을 전송하는 페이지이다.    
-메일에는 아이템이 포함되어있을 수 있다.
+특정 사용자에게 아이템 첨부가 가능한 메일을 전송하는 페이지이다.    
 
-사용된 주요 컴포넌트
+#### 사용된 주요 컴포넌트
+
 - Input (Bootstrap)
 
     ```html
@@ -911,8 +915,335 @@ Footer 옵션은 선택사항이며, 사용하지 않을경우 footer를 따로 
     ```
     화면에 팝업 메시지를 띄우는 컴포넌트이다.
 
+<br/>
 
+--- 
+
+### 아이템 회수
+
+![](images/2023-07-24-10-09-36.png)
+
+특정 아이템을 지정하여 DB에서 삭제하는 페이지이다.
+
+#### 사용된 주요 컴포넌트
+
+- RadioBox (Ant Design)
+
+    ```html
+    <RadioGroup @bind-Value="@searchType">
+        <Radio RadioButton Value="@("ItemID")">ItemID</Radio>
+        <Radio RadioButton Value="@("ItemCode")">ItemCode</Radio>
+        <Radio RadioButton Value="@("UserID")">UserID</Radio>
+    </RadioGroup>
+
+    @code
+    {
+        string searchType = "ItemID";
+    }
+    ```
+    회수할 아이템을 검색하기 위한 카테고리를 설정하는 컴포넌트이다.
+
+- Input (Bootstrap)
+
+    ```html
+    Input Number:
+    <input type="number" @bind="searchValue" class="form-label" name="SearchValue">Input Number</input>
+
+    @code
+    {
+        Int64 searchValue = 0;
+    }
+    ```
+    검색할 숫자를 입력하는 컴포넌트이다.
+
+- Button (Bootstrap)
+
+    ```html
+    <button class="btn btn-primary" @onclick="GetUserItemList">Search</button>
+    <Button Type="primary" OnClick="@(()=>{ if (selectedRows != null && selectedRows.Count() != 0) _visible = true; else ErrorMessage(); })">
+    Retrieve
+    </Button>
+
+    @code
+    {
+        List<UserItem> UserItemDataSet = new();
+
+        async Task GetUserItemList()
+        {
+            UserItemDataSet.Clear();
+
+            var response = await ItemService.GetUserItemList(searchType, searchValue);
+            UserItemDataSet = response.UserItem;
+        }
+    }
+    ```
+    클릭시 GetUserItemList() 함수를 호출하거나, _visible 값을 true로 변경하여 Modal Dialog가 나타나도록 하는 컴포넌트이다.    
+
+- Table (Ant Design)
+
+    ```html
+    <Table TItem="UserItem" DataSource="@UserItemDataSet" @bind-SelectedRows="selectedRows">
+    <Selection Key="@(context.ItemId.ToString())" Disabled="@(context.IsDestroyed == true)" />
+    <GenerateColumns Range="0.." Definitions=definitions />
+    </Table>
+
+    @code
+    {
+        IEnumerable<UserItem> selectedRows;
+    }
+    ```
+    받아온 데이터들을 테이블로 표시하는 컴포넌트이다.    
+    타 페이지들에서 사용한 테이블들과는 달리 특정 row를 선택할 수 있도록 `@bind-SelectedRows` 옵션이 설정되어있다.    
+    이 때 Disabled 옵션을 사용하여 특정 조건에 해당하는 row는 선택이 불가능하도록 만들 수 있다.    
+
+- CheckBox (Ant Design)
+    ```html
+    <Checkbox @bind-Checked="sendMail">
+       Send Mail When Retrieve Item
+    </Checkbox>
+
+    @code
+    {
+        bool sendMail = true;
+    }
+    ```
+    아이템 회수시 메일 전송 여부를 선택하는 컴포넌트이다.
+
+- Modal (Ant Design)
+
+    ![](images/2023-07-24-10-15-20.png)
+
+    ```html
+    @{
+    RenderFragment footer =
+        @<Template>
+            <Button OnClick="@(async ()=>{ await RetrieveButtonClick(); await SuccessMessage();})"
+                    Type="primary" Loading="@_loading">
+                Confirm
+            </Button>
+            <Button OnClick="@(()=>{ _visible = false; })">Cancel</Button>
+        </Template>;
+    }
+
+    <Modal Title="!WARNING!"
+        Visible="@_visible"
+        Footer="@footer">
+        <p>이 행동은 되돌릴 수 없습니다. 정말로 데이터를 삭제하시겠습니까?</p>
+    </Modal>
+    ```
+
+    ```c#
+    @code
+    {
+        async Task RetrieveButtonClick()
+        {
+            await RetrieveUserItem();
+            _visible = false;
+        }
+
+        async Task RetrieveUserItem()
+        {
+            if (selectedRows.Count() != 0)
+            {
+                _loading = true;
+
+                if (sendMail == true)
+                {
+                    var response = await ItemService.RetrieveUserItem(selectedRows, mailForm);
+                }
+                else
+                {
+                    var response = await ItemService.RetrieveUserItem(selectedRows, null);
+                }
+
+                await GetUserItemList();
+
+                _loading = false;
+            }
+            else
+            {
+                await ErrorMessage();
+            }
+        }
+    }
+    ```
+    아이템 회수 버튼 클릭시 창에 띄워지는 Modal Dialog 컴포넌트이다.    
+    Footer 옵션으로 다이얼로그의 형식을 설정하였으며, Confirm 버튼 클릭시 RetrieveButtonClick() 함수가 호출되어 실질직인 로직이 진행된다.    
+    Loading 옵션을 사용하여 로직이 진행되는 동안 작업이 진행중임을 표시하였다.    
+    작업이 끝나면 GetUserItemList() 함수를 호출하여 테이블을 갱신하고, _loading과 _visible 변수를 false로 변경하여 모든 작업이 끝났음을 알린다.    
+
+- Message (Ant Design)
+
+    ```c#
+    @code
+    {
+        async Task SuccessMessage()
+        {
+            await _message.Success("Retrieve Item Success!", 10);
+        }
+
+        async Task ErrorMessage()
+        {
+            await _message.Error("No Selected Item!");
+        }
+    }
+    ```
+    화면에 팝업 메시지를 띄우는 컴포넌트이다.
 
 <br/>
 
 --- 
+
+### 캠페인 설정
+
+![](images/2023-07-24-10-41-06.png)
+
+특정 캠페인과 기간을 지정하여 설정하는 페이지이다.    
+단, 현재는 DB와 연동하는 기능은 구현되어있지 않으며 컴포넌트에 표기하기 위한 최소한의 기능만 구현되어있다.   
+
+#### 사용된 주요 컴포넌트
+
+- DatePicker (Ant Design)
+
+    ```html
+    <RangePicker TValue="DateTime?[]" ShowTime='@("HH:mm")' OnChange="OnRangeChange"/>
+
+    @code
+    {
+        List<DateTime> period = new List<DateTime>();
+
+        void OnRangeChange(DateRangeChangedEventArgs args)
+        {
+            period.Add(args.Dates[0].Value);
+            period.Add(args.Dates[1].Value);
+        }
+    }
+    ```
+    기간을 설정하는 컴포넌트이다.
+
+- CheckBox (Radzen)
+    
+    ```html
+    <RadzenCheckBox @bind-Value="@allowVirtualization" Name="allowVirtualization" />
+    <RadzenLabel Text="Allow virtualization" Component="allowVirtualization" />
+
+    @code
+    {
+        bool allowVirtualization = false;
+    }
+    ```
+    아래 DataList의 Virtualization을 허용할 것인지 여부를 선택하는 컴포넌트이다.    
+
+- DataList (Radzen)
+
+    ```html
+    <RadzenDataList AllowVirtualization=@allowVirtualization Style="@(allowVirtualization ? "height:400px;overflow:auto;" : "")"
+                    WrapItems="@(!allowVirtualization)" AllowPaging="@(!allowVirtualization)"
+                    Data="@campaigns" TItem="Campaign" PageSize="5" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+        <Template Context="campaign">
+            <RadzenCard Style="width: 100%; padding: 0;">
+                <RadzenRow Gap="0">
+
+                    <RadzenColumn Size="12" SizeLG="3" Class="rz-p-4 product-title">
+                        <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="rz-color-secondary">@(campaign.Title)</RadzenText>
+                    </RadzenColumn>
+
+                    <RadzenColumn Size="12" SizeLG="7" Class="rz-p-4">
+                        <RadzenRow Gap="0">
+                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" Class="rz-mb-0"></RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body2">@(campaign.Content)</RadzenText>
+                        </RadzenRow>
+                    </RadzenColumn>
+
+                    <RadzenColumn Size="12" SizeLG="2" Class="rz-p-4">
+                        <RadzenButton Text="Set Campaign" Style="width: 100%" Click=@(args => SetNewCampaign(campaign)) />
+                    </RadzenColumn>
+
+                </RadzenRow>
+            </RadzenCard>
+        </Template>
+    </RadzenDataList>
+
+    @code
+    {
+        RadzenScheduler<AppointmentData> scheduler;
+        IList<AppointmentData> appointments = new List<AppointmentData>();
+
+        async Task SetNewCampaign(Campaign campaign)
+        {
+            if (period == null || period.Count == 0)
+            {
+                await _message.Error("기간을 설정해주세요.");
+                return;
+            };
+
+            AppointmentData data = new AppointmentData
+            {
+                Start = period[0],
+                End = period[1],
+                Text = campaign.Title
+            };
+
+            if (data != null)
+            {
+                appointments.Add(data);
+                await scheduler.Reload();
+            }
+
+            console.Log($"New Campaign={data.Text}:{data.Start}~{data.End}");
+            await _message.Success("Success!");
+        }
+    }
+    ```
+    캠페인 리스트를 담아두고, 버튼 클릭시 스케쥴러에 캠페인을 등록시키는 컴포넌트이다.    
+
+- Scheduler (Radzen)
+
+    ```html
+    <RadzenScheduler @ref=@scheduler SlotRender=@OnSlotRender style="height: 768px;" 
+                    TItem="AppointmentData" Data=@appointments StartProperty="Start" EndProperty="End"
+                    TextProperty="Text" SelectedIndex="2" AppointmentSelect=@OnAppointmentSelect>
+        <RadzenDayView />
+        <RadzenWeekView />
+        <RadzenMonthView />
+        <RadzenYearView />
+    </RadzenScheduler>
+
+    @code
+    {
+        void OnSlotRender(SchedulerSlotRenderEventArgs args)
+        {
+            if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
+            {
+                args.Attributes["style"] = "background: rgba(255,220,40,.2);";
+            }
+        }
+
+        async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<AppointmentData> args)
+        {
+            console.Log($"AppointmentSelect: Appointment={args.Data.Text}");
+
+            await DialogService.OpenAsync<EditAppointmentPage>("Edit Appointment", new Dictionary<string, object> { { "Appointment", args.Data } });
+
+            await scheduler.Reload();
+        }
+    }
+    ```
+    스케쥴러를 나타내는 컴포넌트이다.    
+    SlotRender 옵션으로 렌더링시 수행할 행동을 지정할 수 있으며, 현재는 OnSlotRender() 함수에서 오늘 날짜 칸의 배경색을 바꾸는 기능이 구현되어있다.    
+    AppointmentSelect 옵션으로 등록된 스케쥴 클릭시의 행동을 지정할 수 있으며, 현재는 OnApointmentSelect() 함수에서 스케쥴을 수정하는 기능이 구현되어있다.
+    이 때 EditApointmentPage는 따로 팝업되도록 만들어놓은 페이지이며 EditAppointmentPage.razor 파일에서 확인할 수 있다.    
+
+- Console (Radzen)
+
+    ```html
+    <EventConsole @ref=@console />
+
+    @code
+    {
+        EventConsole console;
+    }
+    ```
+    콘솔창을 출력하는 컴포넌트이다. 콘솔창의 레이아웃 및 기능은 EventConsole.razor 파일에 설정되어있다.    
+    
+
