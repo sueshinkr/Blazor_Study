@@ -1,3 +1,6 @@
+본 프로젝트는 Com2us Genius 인턴기간중에 수행한 Blazor 학습 프로젝트이다.
+C# / ASP.NET Core / Blazor WebAssembly 를 사용하였으며, 프로젝트 수행 기간은 약 열흘이다.
+
 # Blazor_Study
 
 ## 목차   
