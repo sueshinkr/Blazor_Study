@@ -58,6 +58,8 @@ Blazor WebAssembly(WASM) 앱의 자산은 정적 파일로 배포되는데, 이 
 
 완성된 앱은 Server 프로젝트에서 게시를 통해 배포할 수 있다.
 
+![image](https://github.com/sueshinkr/Blazor_Study/assets/100945798/173b4386-4b1c-4a28-8821-37526a1a538e)
+
 <br>
 
 ---
